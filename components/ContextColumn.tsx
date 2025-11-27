@@ -21,6 +21,7 @@ interface ContextColumnProps {
   availableEmbeddingModels: string[];
   embeddingPricing: Record<string, number>;
   onChangeEmbeddingModel: (m: string) => void;
+  embeddingHints: Record<string, string>;
 }
 
 export function ContextColumn({
@@ -40,7 +41,8 @@ export function ContextColumn({
   embeddingModel,
   availableEmbeddingModels,
   embeddingPricing,
-  onChangeEmbeddingModel
+  onChangeEmbeddingModel,
+  embeddingHints
 }: ContextColumnProps) {
   const [phrase, setPhrase] = useState(initialSearchPhrase ?? "");
   const [minSim, setMinSim] = useState(initialMinSimilarity ?? 0.75);
@@ -54,8 +56,10 @@ export function ContextColumn({
   );
 
   return (
-    <section className="flex flex-col h-full">
-      <h2 className="text-lg font-semibold mb-2">Context</h2>
+    <section className="flex flex-col h-full"> 
+      <h2 className="text-lg font-semibold mb-2">
+        <span className="text-5xl align-middle mr-1">✁</span> Context
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pb-24">
         {chunks.map((chunk) => {
           const checked = selectedChunkIds.has(chunk.id);
@@ -93,7 +97,7 @@ export function ContextColumn({
       <div className="column-sticky-footer p-3 rounded-t-md">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
-            <label className="text-sm text-gray-700 min-w-24">Embedding</label>
+            <label className="text-sm text-gray-700">Model</label>
             <select
               className="rounded border px-3 py-2 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100"
               value={embeddingModel}
@@ -108,6 +112,9 @@ export function ContextColumn({
             <span className="text-xs text-gray-600 tabular-nums">
               ↑ ${embeddingPricing[embeddingModel]?.toFixed(2) ?? "—"} per 1M
             </span>
+          </div>
+          <div className="mt-1 text-xs text-gray-600 dark:text-gray-400">
+            {embeddingHints[embeddingModel]}
           </div>
           <div className="flex gap-2">
             <input

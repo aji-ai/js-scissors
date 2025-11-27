@@ -82,7 +82,9 @@ export function PredictionColumn({
 
   return (
     <section className="flex flex-col h-full">
-      <h2 className="text-lg font-semibold mb-2">Prediction</h2>
+      <h2 className="text-lg font-semibold mb-2">
+        <span className="text-5xl align-middle mr-1">✂</span> Prediction
+      </h2>
       <div className="flex-1 overflow-auto rounded border bg-white p-3 dark:bg-gray-800 dark:border-gray-700">
         {mode === "text" && <pre className="whitespace-pre-wrap text-sm">{output}</pre>}
         {mode === "markdown" && (

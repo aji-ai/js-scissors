@@ -20,6 +20,7 @@ type AppState = {
   embeddingModel: string;
   availableEmbeddingModels: string[];
   embeddingPricing: Record<string, number>;
+  embeddingHints: Record<string, string>;
   // cognition
   prompt: string;
   modelId: string;
@@ -151,6 +152,14 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     [EMBEDDING_PRICES]
   );
   const [embeddingModel, setEmbeddingModel] = useState<string>(availableEmbeddingModels[0]);
+  const EMBEDDING_HINTS: Record<string, string> = useMemo(
+    () => ({
+      "text-embedding-3-large": "2024 model • Highest quality modern embeddings.",
+      "text-embedding-3-small": "2024 model • Small, fast, cost‑efficient.",
+      "text-embedding-ada-002": "2022 model • Legacy ada embeddings, cheaper but older."
+    }),
+    []
+  );
 
   const [prompt, setPrompt] = useState<string>("");
   const [modelId, setModelId] = useState<string>(sortedModels[0]);
@@ -347,6 +356,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       embeddingModel,
       availableEmbeddingModels,
       embeddingPricing: EMBEDDING_PRICES,
+      embeddingHints: EMBEDDING_HINTS,
       searchStatus,
       searchError,
       prompt,

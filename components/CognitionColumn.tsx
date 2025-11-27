@@ -24,7 +24,9 @@ export function CognitionColumn({
   const price = modelPricing?.[model];
   return (
     <section className="flex flex-col h-full">
-      <h2 className="text-lg font-semibold mb-2">Cognition</h2>
+      <h2 className="text-lg font-semibold mb-2">
+        <span className="text-5xl align-middle mr-1">✃</span> Cognition
+      </h2>
       <div className="flex-1">
         <textarea
           value={prompt}

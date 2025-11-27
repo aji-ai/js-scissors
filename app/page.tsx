@@ -50,6 +50,7 @@ function AppColumns() {
               availableEmbeddingModels={s.availableEmbeddingModels}
               embeddingPricing={s.embeddingPricing}
               onChangeEmbeddingModel={s.setEmbeddingModel}
+              embeddingHints={s.embeddingHints}
             />
           </div>
           <div className="md:col-span-1">
