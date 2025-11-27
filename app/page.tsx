@@ -74,6 +74,8 @@ function AppColumns() {
               availableModels={s.availableModels}
               modelHints={s.modelHints}
               modelPricing={s.modelPricing}
+              useWeb={s.useWeb}
+              onChangeUseWeb={s.setUseWeb}
               onRun={s.run}
               isProcessing={s.isProcessing}
             />

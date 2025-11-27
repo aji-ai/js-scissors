@@ -28,6 +28,7 @@ type AppState = {
   modelHints: Record<string, { label: string; hint: string }>;
   modelPricing: Record<string, { input?: number; output?: number }>;
   isProcessing: boolean;
+  useWeb: boolean;
   // prediction
   output: string;
   viewerMode: ViewerMode;
@@ -51,16 +52,18 @@ type AppState = {
   setViewerMode: (mode: ViewerMode) => void;
   applyTolerance: (min: number) => void;
   addChatFromPrediction: (compact: boolean) => void;
+  setUseWeb: (val: boolean) => void;
 };
 
 const MODELS = [
   "gpt-5.1",
   "gpt-5-mini",
-  "gpt-5-nano",
   "gpt-5-pro",
   "gpt-4o",
   "gpt-4o-mini",
-  "gpt-4.1"
+  "gpt-4.1",
+  "gpt-4.1-mini",
+  "gpt-4.1-nano"
 ];
 
 const MODEL_INFO: Record<string, { label: string; hint: string }> = {
@@ -95,6 +98,14 @@ const MODEL_INFO: Record<string, { label: string; hint: string }> = {
   "gpt-4.1": {
     label: "GPT-4.1",
     hint: "Strong general model (non-reasoning)."
+  },
+  "gpt-4.1-mini": {
+    label: "GPT-4.1 mini",
+    hint: "Smaller 4.1 variant; good quality at lower cost and latency."
+  },
+  "gpt-4.1-nano": {
+    label: "GPT-4.1 nano",
+    hint: "Fastest, most cost‑efficient 4.1 class for lightweight tasks."
   }
 };
 
@@ -105,13 +116,14 @@ const PRICING_PER_MTOK: Record<string, { input?: number; output?: number }> = {
   // GPT‑5 family (from pricing table)
   "gpt-5.1": { input: 1.25, output: 10.0 },
   "gpt-5-mini": { input: 0.25, output: 2.0 },
-  "gpt-5-nano": { input: 0.05, output: 0.4 },
   "gpt-5-pro": { input: 15.0, output: 120.0 },
   // Other popular models (verify on pricing page)
   "gpt-4o": { input: 5.0, output: 15.0 },
   "gpt-4o-mini": { input: 0.15, output: 0.6 },
   // Update gpt-4.1 per table shown
-  "gpt-4.1": { input: 2.0, output: 8.0 }
+  "gpt-4.1": { input: 2.0, output: 8.0 },
+  "gpt-4.1-mini": { input: 0.40, output: 0.10 },
+  "gpt-4.1-nano": { input: 0.10, output: 0.025 }
 };
 
 const Ctx = createContext<AppState | null>(null);
@@ -167,10 +179,12 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
   );
 
   const [prompt, setPrompt] = useState<string>("");
-  const [modelId, setModelId] = useState<string>(
-    sortedModels.includes("gpt-5-nano") ? "gpt-5-nano" : sortedModels[sortedModels.length - 1]
-  );
+  const [modelId, setModelId] = useState<string>(() => {
+    if (sortedModels.includes("gpt-4.1-nano")) return "gpt-4.1-nano";
+    return sortedModels[sortedModels.length - 1]; // fallback to cheapest
+  });
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [useWeb, setUseWeb] = useState<boolean>(false);
 
   const [output, setOutput] = useState<string>("");
   const [viewerMode, setViewerMode] = useState<ViewerMode>("text");
@@ -310,7 +324,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       const res = await fetch("/api/respond", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ model: modelId, prompt, context: selected })
+        body: JSON.stringify({ model: modelId, prompt, context: selected, useWeb })
       });
       if (!res.ok) throw new Error(`Respond failed: ${res.status}`);
       const data: {
@@ -338,7 +352,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsProcessing(false);
     }
-  }, [chunks, userChunks, selectedChunkIds, modelId, prompt]);
+  }, [chunks, userChunks, selectedChunkIds, modelId, prompt, useWeb]);
 
   const addChunk = useCallback((title: string, body: string) => {
     const id = `usr-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
@@ -407,6 +421,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       modelHints: MODEL_INFO,
       modelPricing: PRICING_PER_MTOK,
       isProcessing,
+      useWeb,
       similarityByChunk,
       cosineByChunk,
       output,
@@ -426,6 +441,8 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       applyTolerance
       ,
       addChatFromPrediction
+      ,
+      setUseWeb
     }),
     [
       scenarioId,
@@ -438,6 +455,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       prompt,
       modelId,
       isProcessing,
+      useWeb,
       similarityByChunk,
       cosineByChunk,
       output,
@@ -454,7 +472,8 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       run,
       applyTolerance
       ,
-      addChatFromPrediction
+      addChatFromPrediction,
+      setUseWeb
     ]
   );
 

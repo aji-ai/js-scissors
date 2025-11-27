@@ -6,6 +6,8 @@ interface CognitionColumnProps {
   availableModels: string[];
   modelHints: Record<string, { label: string; hint: string }>;
   modelPricing?: Record<string, { input?: number; output?: number }>;
+  useWeb: boolean;
+  onChangeUseWeb: (value: boolean) => void;
   onRun: () => void;
   isProcessing: boolean;
 }
@@ -18,6 +20,8 @@ export function CognitionColumn({
   availableModels,
   modelHints,
   modelPricing,
+  useWeb,
+  onChangeUseWeb,
   onRun,
   isProcessing
 }: CognitionColumnProps) {
@@ -90,6 +94,17 @@ export function CognitionColumn({
               aria-label="Loading"
             />
           )}
+        </div>
+        <div className="mt-2 flex items-center gap-3">
+          <label className="flex items-center gap-2 text-xs text-gray-700 dark:text-gray-300">
+            <input
+              type="checkbox"
+              className="h-4 w-4"
+              checked={useWeb}
+              onChange={(e) => onChangeUseWeb(e.target.checked)}
+            />
+            Use web search (Responses API)
+          </label>
         </div>
       </div>
     </section>

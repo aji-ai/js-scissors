@@ -30,6 +30,7 @@ export interface RespondRequestBody {
   model: string;
   prompt: string;
   context: ScenarioChunk[];
+  useWeb?: boolean;
 }
 
 export interface RespondResult {

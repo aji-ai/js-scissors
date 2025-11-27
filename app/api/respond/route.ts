@@ -17,7 +17,7 @@ function buildInputText(prompt: string, context: { title: string; body: string }
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as RespondRequestBody;
-    const { model, prompt, context } = body || {};
+    const { model, prompt, context, useWeb } = body || {};
     if (!model || typeof prompt !== "string" || !Array.isArray(context)) {
       return NextResponse.json(
         { error: "model, prompt, and context[] are required" },
@@ -33,7 +33,11 @@ export async function POST(request: Request) {
     const t0 = Date.now();
     const response = await openai.responses.create({
       model,
-      input
+      input,
+      // Use the official web search tool type per Responses API docs
+      ...(useWeb
+        ? { tools: [{ type: "web_search_preview" } as any], tool_choice: "auto" as any }
+        : {})
     });
     const durationMs = Date.now() - t0;
 
