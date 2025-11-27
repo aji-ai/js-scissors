@@ -6,15 +6,27 @@ import { PredictionColumn } from "@/components/PredictionColumn";
 import { GlobalScenarioBar } from "@/components/GlobalScenarioBar";
 import { SCENARIOS } from "@/lib/scenarios";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Modal } from "@/components/Modal";
+import { useState } from "react";
 
 function AppColumns() {
   const s = useAppState();
+  const [aboutOpen, setAboutOpen] = useState(false);
   return (
     <>
       <header className="mx-auto w-full max-w-screen-2xl 2xl:max-w-[1800px] p-4">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold">Context × Cognition → Prediction</h1>
+            <h1 className="text-2xl font-semibold">
+              <button
+                type="button"
+                onClick={() => setAboutOpen(true)}
+                className="hover:underline underline-offset-4 decoration-dotted"
+                title="Click to view app image"
+              >
+                Context × Cognition → Prediction
+              </button>
+            </h1>
             <p className="text-sm text-gray-600 dark:text-gray-300">
               Embeddings Model × Completion Model → Inference Output
             </p>
@@ -84,6 +96,21 @@ function AppColumns() {
         scenarios={SCENARIOS.map((x) => ({ id: x.id, name: x.name }))}
         onChangeScenario={s.setScenarioId}
       />
+      <Modal
+        title="“Human rational behavior is shaped by a scissors whose blades are the structure of task environments and the computational capabilities of the actor.” — Herbert Simon"
+        open={aboutOpen}
+        onClose={() => setAboutOpen(false)}
+        maxWidthClass="max-w-none"
+        secondaryText="Close"
+      >
+        <div className="flex items-center justify-center">
+          <img
+            src="/about.png"
+            alt="About this application"
+            className="rounded w-auto h-auto max-w-[calc(100vw-4rem)] max-h-[calc(100vh-4rem)] object-contain"
+          />
+        </div>
+      </Modal>
     </>
   );
 }
