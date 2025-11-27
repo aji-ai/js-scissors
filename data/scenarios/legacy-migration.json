@@ -1,0 +1,39 @@
+{
+  "id": "legacy-migration",
+  "name": "Legacy Code Migration",
+  "samplePrompt": "You are a migration assistant. For each selected LEGACY CODE SNIPPET × TARGET stack, produce Markdown only:\\n\\n1) Transformed code (fenced block) in the target stack.\\n2) Short explanation (why correct/idiomatic, key security/perf improvements).\\n3) Migration checklist (bullets): tests and risks to verify.\\n\\nKeep it concise and skimmable.",
+  "chunks": [
+    {
+      "id": "lm-code-cobol",
+      "title": "Legacy: COBOL batch extract",
+      "body": "IDENTIFICATION DIVISION.\\nPROGRAM-ID. SUMSALES.\\nPROCEDURE DIVISION.\\nREAD SALES-FILE AT END GO TO FINISH.\\nPERFORM UNTIL EOF = 'Y'\\n  ADD SALES-AMOUNT TO TOTAL\\n  READ SALES-FILE AT END MOVE 'Y' TO EOF\\nEND-PERFORM.\\nFINISH. DISPLAY TOTAL. STOP RUN."
+    },
+    {
+      "id": "lm-code-vb6",
+      "title": "Legacy: VB6 form with globals",
+      "body": "Dim conn As Object\\nDim userId As String\\nPrivate Sub Form_Load()\\n  Set conn = CreateObject(\"ADODB.Connection\")\\n  conn.Open \"DSN=Legacy;\"\\n  userId = Text1.Text\\nEnd Sub\\nPrivate Sub BtnSave_Click()\\n  conn.Execute \"INSERT INTO Logs(UserId, Note) VALUES('\" & userId & \"','clicked')\"\\nEnd Sub"
+    },
+    {
+      "id": "lm-code-perl",
+      "title": "Legacy: Perl CGI script",
+      "body": "#!/usr/bin/perl\\nprint \"Content-type: text/html\\n\\n\";\\nmy $name = $ENV{\"QUERY_STRING\"};\\nprint \"<html><body>Hello $name</body></html>\";"
+    },
+    {
+      "id": "lm-target-py",
+      "title": "Target: Python 3 + FastAPI",
+      "body": "Migrate to FastAPI REST endpoint(s); use Pydantic models, dependency injection, and parameterized DB access."
+    },
+    {
+      "id": "lm-target-node",
+      "title": "Target: Node (TypeScript) + Express",
+      "body": "Migrate to Express with TypeScript types, async/await, env-config, and parameterized queries/ORM."
+    },
+    {
+      "id": "lm-target-java",
+      "title": "Target: Java + Spring Boot",
+      "body": "Migrate to Spring Boot REST controllers, services, repositories; use JPA or JDBC with prepared statements."
+    }
+  ]
+}
+
+

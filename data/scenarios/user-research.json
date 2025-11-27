@@ -1,0 +1,79 @@
+{
+  "id": "user-research",
+  "name": "Simulated User Research",
+  "samplePrompt": "Run a simple concept test. For each selected DEMOGRAPHIC × PRODUCT IDEA pair, produce Markdown only:\\n\\n1) Appeal Matrix (table) — rows = demographics, columns = ideas; values 1–5.\\n2) For each pair: 3 bullets — value props, risks/barriers, messaging angle.\\n3) One‑line sample testimonial per demographic.\\n4) 3–5 bullet recommendation (launch order + rationale).\\n\\nKeep it short and skimmable.",
+  "chunks": [
+    {
+      "id": "ur-demo-genz",
+      "title": "Demographic: Gen Z (18–24)",
+      "body": "Mobile‑first; creator economy; short‑form content; price‑sensitive."
+    },
+    {
+      "id": "ur-demo-millennials",
+      "title": "Demographic: Millennials (25–40)",
+      "body": "Subscription‑friendly; social proof; work‑life hacks."
+    },
+    {
+      "id": "ur-demo-genx",
+      "title": "Demographic: Gen X (41–56)",
+      "body": "Reliability; control; time‑savings; value for money."
+    },
+    {
+      "id": "ur-demo-boomers",
+      "title": "Demographic: Boomers (57+)",
+      "body": "Clarity; trust; live support; accessibility."
+    },
+    {
+      "id": "ur-demo-smb",
+      "title": "Demographic: SMB Owners",
+      "body": "ROI; integrations; deployment friction."
+    },
+    {
+      "id": "ur-demo-enterprise",
+      "title": "Demographic: Enterprise IT",
+      "body": "Security; compliance; SSO; admin controls."
+    },
+    {
+      "id": "ur-demo-parents",
+      "title": "Demographic: Parents with Kids",
+      "body": "Safety; budgeting; scheduling features."
+    },
+    {
+      "id": "ur-demo-students",
+      "title": "Demographic: Students",
+      "body": "Freemium; collaboration; campus workflows."
+    },
+    {
+      "id": "ur-idea-a",
+      "title": "Product Idea A",
+      "body": "AI trip planner with auto‑book."
+    },
+    {
+      "id": "ur-idea-b",
+      "title": "Product Idea B",
+      "body": "Focus timer with social accountability."
+    },
+    {
+      "id": "ur-idea-c",
+      "title": "Product Idea C",
+      "body": "AI resume + mock interview coach."
+    },
+    {
+      "id": "ur-idea-d",
+      "title": "Product Idea D",
+      "body": "Grocery optimizer with recipe personalization."
+    },
+    {
+      "id": "ur-idea-e",
+      "title": "Product Idea E",
+      "body": "AR try‑before‑you‑buy for home goods."
+    },
+    {
+      "id": "ur-idea-f",
+      "title": "Product Idea F",
+      "body": "Subscription finance copilot: cancellation + savings."
+    }
+  ]
+}
+
+

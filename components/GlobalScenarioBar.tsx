@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 
 interface GlobalScenarioBarProps {
   scenarioId: string;
@@ -61,12 +60,12 @@ export function GlobalScenarioBar({
               // Insert a disabled divider after 'cybersecurity'
               if (s.id === "cybersecurity") {
                 return (
-                  <>
+                  <Fragment key={`grp-${s.id}`}>
                     {option}
                     <option key="__divider__" value="__divider__" disabled>
                       ───────── Applications ─────────
                     </option>
-                  </>
+                  </Fragment>
                 );
               }
               return option;

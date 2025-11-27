@@ -1,6 +1,6 @@
 {
   "id": "chatbot",
-  "name": "Chatbot",
+  "name": "Anatomy of a Chatbot",
   "samplePrompt": "Chat right here ...",
   "chunks": [
     {
