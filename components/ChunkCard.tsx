@@ -20,7 +20,7 @@ export function ChunkCard({ chunk, checked, onChange, highlight, score }: ChunkC
         </div>
       )}
       <label
-        className={`flex flex-col rounded-md border p-3 cursor-pointer gap-2 transition
+        className={`flex flex-col rounded-md border p-3 cursor-pointer gap-2 transition overflow-hidden
         ${checked ? "border-blue-500 ring-2 ring-blue-200 dark:ring-blue-900/40" : "border-gray-200 dark:border-gray-700"}
         ${highlight ? "bg-yellow-50 dark:bg-yellow-900/20" : "bg-white dark:bg-gray-800"}
       `}
@@ -32,9 +32,11 @@ export function ChunkCard({ chunk, checked, onChange, highlight, score }: ChunkC
             checked={checked}
             onChange={(e) => onChange(e.target.checked)}
           />
-          <div>
+          <div className="min-w-0">
             <div className="font-medium">{chunk.title}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap">{chunk.body}</div>
+            <div className="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap break-words break-all max-w-full overflow-hidden">
+              {chunk.body}
+            </div>
           </div>
         </div>
       </label>

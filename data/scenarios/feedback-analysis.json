@@ -1,0 +1,19 @@
+{
+  "id": "feedback-analysis",
+  "name": "Customer Feedback Analysis",
+  "samplePrompt": "Cluster the selected snippets by theme, list the top 5 issues with counts, then produce a markdown table of user stories (As a…, I want…, so that…) with 2–3 acceptance criteria per story. Be concise and actionable.",
+  "chunks": [
+    {
+      "id": "fb1",
+      "title": "Feedback Snippets (1–5)",
+      "body": "1) The mobile app crashes when I tap 'Save draft'.\\n2) I cannot export to CSV—only XLSX is supported.\\n3) Pricing page is confusing; monthly vs yearly isn’t clear.\\n4) Love the search speed, but results lack filters.\\n5) Dark mode resets to light after updates."
+    },
+    {
+      "id": "fb2",
+      "title": "Feedback Snippets (6–10)",
+      "body": "6) Need SSO support for our Okta tenant.\\n7) CSV export corrupts accented characters.\\n8) Customer support took too long (5 days) to reply.\\n9) Wish we had saved views for dashboards.\\n10) The onboarding flow was much better this release—nice!"
+    }
+  ]
+}
+
+

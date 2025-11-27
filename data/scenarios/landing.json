@@ -1,0 +1,49 @@
+{
+  "id": "landing",
+  "name": "Landing Page",
+  "samplePrompt": "Draft a marketing landing page for a vacation service that is customizable and presented in beautiful HTML.",
+  "chunks": [
+    {
+      "id": "ln1",
+      "title": "Hero Candidates",
+      "body": "1) Mountain landscape — nature / outdoors\nhttps://images.unsplash.com/photo-1501785888041-af3ef285b470\n\n2) Ocean waves / sea water\nhttps://images.unsplash.com/photo-1507525428034-b723cf961d3e\n\n3) Modern house exterior — architecture / home design\nhttps://images.unsplash.com/photo-1568605114967-8130f3a36994\n\n4) City skyline at dusk — urban architecture\nhttps://images.unsplash.com/photo-1467269204594-9661b134dd2b\n\n5) Working on laptop — workspace / productivity\nhttps://images.unsplash.com/photo-1517430816045-df4b7de11d1d"
+    },
+    {
+      "id": "ln2",
+      "title": "Additional Images",
+      "body": "Nature / natural landscapes / outdoors — https://unsplash.com/s/photos/nature\nInspiration / abstract / conceptual — https://unsplash.com/s/photos/inspiration\nSunset / warm-light skies — https://unsplash.com/s/photos/sunset\nTechnology / futuristic — https://unsplash.com/s/photos/technology\nPark / forest / greenery — https://unsplash.com/s/photos/park\nCity / urban / architecture — https://unsplash.com/s/photos/city\nWallpaper / hero backgrounds — https://unsplash.com/t/wallpapers"
+    },
+    {
+      "id": "ln3",
+      "title": "Target Audience",
+      "body": "• Families planning effortless vacations with smart suggestions.\n• Solo travelers wanting safe, customized itineraries.\n• Remote workers seeking AI‑tailored workations with strong Wi‑Fi.\n• Adventure seekers open to dynamic recommendations.\n• Budget travelers optimizing value with real‑time price insights."
+    },
+    {
+      "id": "ln4",
+      "title": "Value Proposition",
+      "body": "• AI‑personalized itineraries in minutes (interests, budget, schedule).\n• Live travel intelligence: pricing, weather, events.\n• One‑click booking handoff to trusted partners.\n• Seamless collaboration: invite friends/family to co‑plan.\n• 24/7 assistance: adjust plans instantly while traveling."
+    },
+    {
+      "id": "ln5",
+      "title": "Call‑To‑Action Ideas",
+      "body": "Primary CTA: \"Plan with AI\"\nSecondary CTAs: \"Explore Destinations\", \"Get Sample Itinerary\", \"See Family Deals\"\nTrust Builders: \"No credit card required\", \"Free 7‑day trial\", \"Cancel anytime\""
+    },
+    {
+      "id": "ln6",
+      "title": "Brand Voice",
+      "body": "Friendly, confident, and clear. Avoid jargon. Focus on outcomes and feelings—stress‑free planning, memorable experiences, smart savings. Keep sentences short and scannable."
+    },
+    {
+      "id": "ln7",
+      "title": "Compliance & Privacy Notes",
+      "body": "• Be transparent about data sources and personalization signals.\n• Provide an opt‑out for tracking and preference storage.\n• Link to Privacy Policy and Terms near the footer CTAs."
+    },
+    {
+      "id": "ln8",
+      "title": "SEO Keywords",
+      "body": "ai trip planner, ai travel planner, personalized itinerary, family vacation planning, weekend getaway, workation planning, travel deals, real‑time travel insights"
+    }
+  ]
+}
+
+

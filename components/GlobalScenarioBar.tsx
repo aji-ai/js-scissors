@@ -49,11 +49,28 @@ export function GlobalScenarioBar({
             value={scenarioId}
             onChange={(e) => onChangeScenario(e.target.value)}
           >
-            {scenarios.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name}
-              </option>
-            ))}
+            <option key="__divider_domains__" value="__divider_domains__" disabled>
+              ───────── Domains ─────────
+            </option>
+            {scenarios.map((s, idx) => {
+              const option = (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              );
+              // Insert a disabled divider after 'cybersecurity'
+              if (s.id === "cybersecurity") {
+                return (
+                  <>
+                    {option}
+                    <option key="__divider__" value="__divider__" disabled>
+                      ───────── Applications ─────────
+                    </option>
+                  </>
+                );
+              }
+              return option;
+            })}
           </select>
           <div className="text-xs text-gray-500">Tip: switch scenarios to prefill context and prompt</div>
         </div>

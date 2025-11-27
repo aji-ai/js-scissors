@@ -1,0 +1,34 @@
+{
+  "id": "email-triage",
+  "name": "Email Risk Triage",
+  "samplePrompt": "You are a safety triage assistant. For each email in the selected context, extract: risk_category (PII | PHI | financial | none), entities (name, address, acct number, SSN, PHI terms, card numbers, etc.), rationale (1–2 sentences), recommended_redactions (list), and a safe_to_forward version of the email body with redactions applied. Output a Markdown section per email with a 5‑column table: | Email ID | Risk | Entities | Rationale | Recommended Redactions | followed by a 'Safe Version' fenced block.",
+  "chunks": [
+    {
+      "id": "et1",
+      "title": "Email A: Expense Reimbursement",
+      "body": "From: jane.doe@example.com\\nSubject: Reimbursement for travel\\n\\nHi Team,\\nMy corporate card ending 4432 was charged twice at 'City Cabs'. Please refund to my Amex **** **** **** 4432. Receipts attached.\\nThanks,\\nJane Doe"
+    },
+    {
+      "id": "et2",
+      "title": "Email B: Benefits Inquiry (PHI risk)",
+      "body": "From: mark.hill@example.org\\nSubject: Health claim details\\n\\nHello,\\nI visited Dr. Nguyen on 10/05 for back pain and got an MRI. Can you confirm coverage and deductible for this procedure?\\n— Mark Hill, Member ID: 84231-AB"
+    },
+    {
+      "id": "et3",
+      "title": "Email C: Address Change (PII)",
+      "body": "From: paula.smith@example.net\\nSubject: Update my address\\n\\nHi, please update my mailing address to 232 Pine Street, Apt 4C, Denver, CO 80205. My account number is 004-223-889.\\nThanks!"
+    },
+    {
+      "id": "et4",
+      "title": "Email D: Harmless Inquiry",
+      "body": "From: hello@customer.com\\nSubject: Sales question\\n\\nHi, do you offer non-profit pricing? We’re considering your service for our volunteer team.\\nBest,\\nAlex"
+    },
+    {
+      "id": "et5",
+      "title": "Email E: Potential SSN",
+      "body": "From: ron.p@example.com\\nSubject: Loan Application\\n\\nHi, here is my SSN 123-45-6789 for the application. Let me know if you need anything else.\\nRon"
+    }
+  ]
+}
+
+

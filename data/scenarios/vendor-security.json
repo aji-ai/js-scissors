@@ -1,0 +1,24 @@
+{
+  "id": "vendor-security",
+  "name": "Vendor Security Normalizer (JSON)",
+  "samplePrompt": "Normalize each vendor's security response to a standard JSON schema. For each control, output: control_id (e.g., 'ENC-AT-REST'), summary (1–2 lines), evidence (links or doc names), risk_level (low|medium|high), gaps (array of missing info), confidence (0–1). Output pure JSON array only, no prose.",
+  "chunks": [
+    {
+      "id": "vs1",
+      "title": "Vendor A Responses (unstructured)",
+      "body": "Encryption at rest: We use AES-256 on all RDS volumes; keys in KMS, rotation annually.\\nIncident response: We have a 24/7 on-call rotation; we test IR twice per year; last incident: none in 12 months.\\nAccess reviews: Managers review quarterly in our IAM dashboard; tickets in Jira."
+    },
+    {
+      "id": "vs2",
+      "title": "Vendor B Responses (unstructured)",
+      "body": "Data at rest is encrypted, but we don't have details handy. Keys are 'managed by our cloud'.\\nIR: On-call engineers; we had a phishing incident last spring; we resolved it in under 24h.\\nAccess reviews: Annual audit; manual spreadsheet."
+    },
+    {
+      "id": "vs3",
+      "title": "Vendor C Responses (unstructured)",
+      "body": "At-rest encryption: KMS-managed keys, rotation every 90 days; SSE-S3 for object storage.\\nIR: We maintain a formal plan aligned to NIST; postmortems documented.\\nAccess: RBAC with SSO; reviews biannually; approvals stored in GRC."
+    }
+  ]
+}
+
+
