@@ -156,8 +156,7 @@ export function PredictionColumn({
               </svg>
             </button>
           </div>
-          <div className="flex-1" />
-          <div className="flex items-end gap-4">
+          <div className="ml-auto hidden xl:flex items-center gap-2">
             <div className="flex flex-col leading-tight text-xs text-gray-700 dark:text-gray-300 tabular-nums">
               <span>
                 ↑ {inputTokensText} | ↓ {outputTokensText}
@@ -172,7 +171,7 @@ export function PredictionColumn({
           </div>
         </div>
         <div className="mt-2 flex items-center gap-3">
-          <label className="flex items-center gap-2 text-xs text-gray-700 dark:text-gray-300">
+          <label className="hidden lg:flex items-center gap-2 text-xs text-gray-700 dark:text-gray-300">
             <input
               type="checkbox"
               className="h-4 w-4"

@@ -63,7 +63,7 @@ export function CognitionColumn({
           </div>
 
           {/* Column: in/out pricing */}
-          <div className="flex flex-col leading-tight">
+          <div className="hidden lg:flex flex-col leading-tight">
             <span className="text-xs text-gray-700 tabular-nums">
               {price?.input != null || price?.output != null
                 ? `↑ ${price?.input != null ? `$${price.input}` : "—"} | ↓ ${

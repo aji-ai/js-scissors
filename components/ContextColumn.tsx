@@ -60,7 +60,7 @@ export function ContextColumn({
       <h2 className="text-lg font-semibold mb-2">
         <span className="text-5xl align-middle mr-1">✁</span> Context
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pb-24">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 pb-24">
         {chunks.map((chunk) => {
           const checked = selectedChunkIds.has(chunk.id);
           const highlight = highlightedChunkIds?.has(chunk.id);
