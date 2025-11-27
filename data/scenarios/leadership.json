@@ -1,0 +1,14 @@
+{
+  "id": "leadership",
+  "name": "Leadership",
+  "samplePrompt": "Draft a leadership memo that aligns teams around the selected context.",
+  "chunks": [
+    { "id": "ld1", "title": "North Star", "body": "Customer trust and long-term value creation guide all decisions." },
+    { "id": "ld2", "title": "Top Priorities", "body": "Reliability, velocity, and developer experience." },
+    { "id": "ld3", "title": "Operating Cadence", "body": "Weekly checkpoints, monthly reviews, quarterly strategy updates." },
+    { "id": "ld4", "title": "Decision-Making", "body": "Directly Responsible Individuals (DRIs), brief RFCs, documented rationale." },
+    { "id": "ld5", "title": "Risk Principles", "body": "Bias to small reversible bets; invest heavily in guardrails." }
+  ]
+}
+
+

@@ -1,0 +1,14 @@
+{
+  "id": "hr",
+  "name": "HR",
+  "samplePrompt": "Write a job description using selected context.",
+  "chunks": [
+    { "id": "hr1", "title": "Role Overview", "body": "This role designs and maintains our people programs and data integrity." },
+    { "id": "hr2", "title": "Inclusion Guidelines", "body": "Avoid gendered terms, ensure ADA compliance, emphasize equal opportunity." },
+    { "id": "hr3", "title": "Compensation Bands", "body": "Transparent ranges, geographic adjustments, total rewards philosophy." },
+    { "id": "hr4", "title": "Interview Process", "body": "Structured interviews with rubrics, panel diversity, timely feedback." },
+    { "id": "hr5", "title": "Benefits", "body": "Health, mental wellness stipend, learning budget, flexible time-off." }
+  ]
+}
+
+

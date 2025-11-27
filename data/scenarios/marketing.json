@@ -1,0 +1,14 @@
+{
+  "id": "marketing",
+  "name": "Marketing",
+  "samplePrompt": "Draft a concise product announcement leveraging the selected context.",
+  "chunks": [
+    { "id": "mk1", "title": "Persona: Growth PMs", "body": "Time-constrained decision makers who value clear ROI, dashboards, and quick pilots." },
+    { "id": "mk2", "title": "Key Features", "body": "Realtime analytics, AI summarization, collaboration, role-based access control." },
+    { "id": "mk3", "title": "Tone & Style", "body": "Confident, friendly, concise. Avoid jargon. Emphasize benefits over features." },
+    { "id": "mk4", "title": "Launch Offer", "body": "30-day free trial; priority onboarding for first 100 signups." },
+    { "id": "mk5", "title": "Target Channels", "body": "LinkedIn, Product Hunt, email to opt-in beta waitlist." }
+  ]
+}
+
+

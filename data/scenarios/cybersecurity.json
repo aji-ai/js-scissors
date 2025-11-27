@@ -1,0 +1,14 @@
+{
+  "id": "cybersecurity",
+  "name": "Cybersecurity",
+  "samplePrompt": "Generate an incident response summary using the selected context.",
+  "chunks": [
+    { "id": "cs1", "title": "Threat Vector", "body": "Credential stuffing detected on public endpoints." },
+    { "id": "cs2", "title": "Indicators", "body": "Anomalous IP clusters, repeated login failures, unexpected token refresh calls." },
+    { "id": "cs3", "title": "Containment", "body": "Rate limits tightened, reCAPTCHA enabled, forced password resets for affected users." },
+    { "id": "cs4", "title": "Eradication", "body": "WAF rules updated, source IPs blocked, compromised tokens revoked." },
+    { "id": "cs5", "title": "Lessons Learned", "body": "Add 2FA enforcement, periodic credential hygiene campaigns, detection rule tuning." }
+  ]
+}
+
+
