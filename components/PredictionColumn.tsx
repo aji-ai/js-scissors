@@ -21,6 +21,7 @@ interface PredictionColumnProps {
   };
   modelId?: string;
   modelPricing?: Record<string, { input?: number; output?: number }>;
+  onAddToContext?: (compact: boolean) => void;
 }
 
 export function PredictionColumn({
@@ -29,7 +30,8 @@ export function PredictionColumn({
   onChangeMode,
   metrics,
   modelId,
-  modelPricing
+  modelPricing,
+  onAddToContext
 }: PredictionColumnProps) {
   const iframeDoc = useMemo(() => {
     if (mode !== "html") return "";
@@ -111,8 +113,14 @@ export function PredictionColumn({
                   : "bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
               }`}
               onClick={() => onChangeMode("text")}
+              aria-label="Plain text view"
+              title="Plain text"
             >
-              Text
+              {/* Bootstrap card-text icon */}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="h-4 w-4 fill-current">
+                <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
+                <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8m0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
+              </svg>
             </button>
             <button
               className={`rounded border px-3 py-1 ${
@@ -121,8 +129,16 @@ export function PredictionColumn({
                   : "bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
               }`}
               onClick={() => onChangeMode("markdown")}
+              aria-label="Markdown view"
+              title="Markdown"
             >
-              Markdown
+              {/* Bootstrap markdown icon */}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="h-4 w-4 fill-current">
+                <path d="M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+                <path fillRule="evenodd" d="M9.146 8.146a.5.5 0 0 1 .708 0L11.5 9.793l1.646-1.647a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 0-.708"/>
+                <path fillRule="evenodd" d="M11.5 5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5"/>
+                <path d="M3.56 11V7.01h.056l1.428 3.239h.774l1.42-3.24h.056V11h1.073V5.001h-1.2l-1.71 3.894h-.039l-1.71-3.894H2.5V11z"/>
+              </svg>
             </button>
             <button
               className={`rounded border px-3 py-1 ${
@@ -131,8 +147,13 @@ export function PredictionColumn({
                   : "bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
               }`}
               onClick={() => onChangeMode("html")}
+              aria-label="Raw HTML view"
+              title="Raw HTML"
             >
-              HTML
+              {/* Bootstrap code-slash icon */}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="h-4 w-4 fill-current">
+                <path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0m6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0"/>
+              </svg>
             </button>
           </div>
           <div className="flex-1" />
@@ -149,6 +170,32 @@ export function PredictionColumn({
             </div>
             <div className="text-xs text-gray-700 dark:text-gray-300">{durationText}</div>
           </div>
+        </div>
+        <div className="mt-2 flex items-center gap-3">
+          <label className="flex items-center gap-2 text-xs text-gray-700 dark:text-gray-300">
+            <input
+              type="checkbox"
+              className="h-4 w-4"
+              id="compact-checkbox"
+              onChange={(e) => {
+                // store on element dataset if needed; we'll read at click
+                (e.currentTarget as any)._compactValue = e.currentTarget.checked;
+              }}
+            />
+            Compact to ~128 tokens if long
+          </label>
+          <div className="flex-1" />
+          <button
+            className="rounded border px-3 py-1 text-xs dark:border-gray-600 disabled:opacity-60"
+            disabled={!output || output.trim().length === 0 || !onAddToContext}
+            onClick={() => {
+              const cb = document.getElementById("compact-checkbox") as HTMLInputElement | null;
+              const compact = cb ? cb.checked : false;
+              onAddToContext?.(compact);
+            }}
+          >
+            Add to Context
+          </button>
         </div>
       </div>
     </section>

@@ -86,6 +86,7 @@ function AppColumns() {
               metrics={s.metrics}
               modelId={s.modelId}
               modelPricing={s.modelPricing}
+              onAddToContext={s.addChatFromPrediction}
             />
           </div>
         </div>

@@ -1,0 +1,19 @@
+{
+  "id": "chatbot",
+  "name": "Chatbot",
+  "samplePrompt": "Chat right here ...",
+  "chunks": [
+    {
+      "id": "cb1",
+      "title": "Chat Turn 1: User + Assistant",
+      "body": "User: Hi, I'm exploring your product. What can it do?\n\nAssistant: Hello! I can help summarize documents, generate outlines, and answer questions using the selected context."
+    },
+    {
+      "id": "cb2",
+      "title": "Chat Turn 2: User + Assistant",
+      "body": "User: I need a short summary for an email.\n\nAssistant: Sure—what key points do you want included? I can keep it to 3–4 sentences."
+    }
+  ]
+}
+
+

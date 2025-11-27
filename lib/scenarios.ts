@@ -3,6 +3,7 @@ import hr from "../data/scenarios/hr.json";
 import leadership from "../data/scenarios/leadership.json";
 import news from "../data/scenarios/news.json";
 import cybersecurity from "../data/scenarios/cybersecurity.json";
+import chatbot from "../data/scenarios/chatbot.json";
 import type { ScenarioPack } from "./types";
 
 export const SCENARIOS: ScenarioPack[] = [
@@ -10,7 +11,8 @@ export const SCENARIOS: ScenarioPack[] = [
   hr as ScenarioPack,
   leadership as ScenarioPack,
   news as ScenarioPack,
-  cybersecurity as ScenarioPack
+  cybersecurity as ScenarioPack,
+  chatbot as ScenarioPack
 ];
 
 const scenarioMap: Record<string, ScenarioPack> = Object.fromEntries(

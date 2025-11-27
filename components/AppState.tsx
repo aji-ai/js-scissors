@@ -50,6 +50,7 @@ type AppState = {
   run: () => void;
   setViewerMode: (mode: ViewerMode) => void;
   applyTolerance: (min: number) => void;
+  addChatFromPrediction: (compact: boolean) => void;
 };
 
 const MODELS = [
@@ -151,7 +152,11 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       ),
     [EMBEDDING_PRICES]
   );
-  const [embeddingModel, setEmbeddingModel] = useState<string>(availableEmbeddingModels[0]);
+  const [embeddingModel, setEmbeddingModel] = useState<string>(
+    availableEmbeddingModels.includes("text-embedding-ada-002")
+      ? "text-embedding-ada-002"
+      : availableEmbeddingModels[availableEmbeddingModels.length - 1]
+  );
   const EMBEDDING_HINTS: Record<string, string> = useMemo(
     () => ({
       "text-embedding-3-large": "2024 model • Highest quality modern embeddings.",
@@ -162,7 +167,9 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
   );
 
   const [prompt, setPrompt] = useState<string>("");
-  const [modelId, setModelId] = useState<string>(sortedModels[0]);
+  const [modelId, setModelId] = useState<string>(
+    sortedModels.includes("gpt-5-nano") ? "gpt-5-nano" : sortedModels[sortedModels.length - 1]
+  );
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const [output, setOutput] = useState<string>("");
@@ -345,6 +352,41 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const addChatFromPrediction = useCallback(
+    async (makeCompact: boolean) => {
+      const assistantText = (output || "").trim();
+      const userText = (prompt || "").trim();
+      if (!assistantText) return;
+      // Build combined chat body including the prompt above the assistant reply
+      let assistantToStore = assistantText;
+      const isLong = assistantText.length > 800;
+      if (makeCompact && isLong) {
+        try {
+          const res = await fetch("/api/compact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: assistantText, targetTokens: 128 })
+          });
+          if (res.ok) {
+            const data: { compact: string } = await res.json();
+            assistantToStore = (data.compact || assistantText).trim();
+          }
+        } catch {
+          // If compaction fails, fall back to original
+        }
+      }
+      const bodyParts: string[] = [];
+      if (userText) bodyParts.push(`User: ${userText}`);
+      bodyParts.push(`\nAssistant: ${assistantToStore}`);
+      const body = bodyParts.join("\n\n");
+      // Determine next chat turn index
+      const existing = chunks.filter((c) => c.title.startsWith("Chat Turn"));
+      const nextIdx = existing.length + 1;
+      addChunk(`Chat Turn ${nextIdx}: User + Assistant`, body);
+    },
+    [output, prompt, chunks, addChunk]
+  );
+
   const value: AppState = useMemo(
     () => ({
       scenarioId,
@@ -382,6 +424,8 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       run,
       setViewerMode,
       applyTolerance
+      ,
+      addChatFromPrediction
     }),
     [
       scenarioId,
@@ -409,6 +453,8 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       search,
       run,
       applyTolerance
+      ,
+      addChatFromPrediction
     ]
   );
 
