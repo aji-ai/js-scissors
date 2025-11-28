@@ -11,6 +11,7 @@ import emailTriage from "../data/scenarios/email-triage.json";
 import vendorSecurity from "../data/scenarios/vendor-security.json";
 import feedbackAnalysis from "../data/scenarios/feedback-analysis.json";
 import userResearch from "../data/scenarios/user-research.json";
+import agentPlayground from "../data/scenarios/agent-playground.json";
 import type { ScenarioPack } from "./types";
 
 export const SCENARIOS: ScenarioPack[] = [
@@ -20,13 +21,14 @@ export const SCENARIOS: ScenarioPack[] = [
   news as ScenarioPack,
   cybersecurity as ScenarioPack,
   healthcarePHR as ScenarioPack,
-  legacyMigration as ScenarioPack,
   chatbot as ScenarioPack,
+  userResearch as ScenarioPack,
+  agentPlayground as ScenarioPack,
   landing as ScenarioPack,
   emailTriage as ScenarioPack,
   vendorSecurity as ScenarioPack,
   feedbackAnalysis as ScenarioPack,
-  userResearch as ScenarioPack
+  legacyMigration as ScenarioPack
 ];
 
 const scenarioMap: Record<string, ScenarioPack> = Object.fromEntries(

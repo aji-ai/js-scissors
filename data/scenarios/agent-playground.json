@@ -1,0 +1,79 @@
+{
+  "id": "agent-playground",
+  "name": "Agent Playground",
+  "samplePrompt": "You are an agent with the selected TOOLS. If any TOOL MANUALS are provided, follow them closely. Solve the selected PROBLEM and return Markdown only:\\n\\n1) Plan — 1–2 steps (what tools, in what order).\\n2) Reasoned tool calls — bullet list (what/why, expected outputs).\\n3) Final answer — the concise solution.\\n4) Postmortem — what worked and what to improve next time.\\n\\nSimulate tool results where necessary; focus on reasoning quality and clarity.",
+  "chunks": [
+    {
+      "id": "ap-tool-web",
+      "title": "Tool: Web Search",
+      "body": "Use web search to gather succinct facts and 2–3 credible sources. Prefer recent dates when relevant. Summarize, cite, and avoid speculation."
+    },
+    {
+      "id": "ap-tool-calc",
+      "title": "Tool: Calculator",
+      "body": "Evaluate arithmetic, percentages, and unit conversions. Show intermediate numbers when helpful. Round sensibly."
+    },
+    {
+      "id": "ap-tool-files",
+      "title": "Tool: File Search",
+      "body": "Search a repo or notes by keyword and simple glob patterns. Return file path hints and short matched snippets."
+    },
+    {
+      "id": "ap-tool-run",
+      "title": "Tool: Code Runner",
+      "body": "Execute small code snippets (simulated). Mention language, inputs, stdout/stderr, and any edge cases tested."
+    },
+    {
+      "id": "ap-tool-email",
+      "title": "Tool: Email Draft",
+      "body": "Turn bullets into a short, polite email with a clear ask and sign‑off."
+    },
+    {
+      "id": "ap-manual-web",
+      "title": "Manual: Web Search",
+      "body": "Narrow queries, prefer .gov/.edu/.org when relevant, check recency, list 2–3 sources with titles + URLs, avoid paywalled dead links."
+    },
+    {
+      "id": "ap-manual-calc",
+      "title": "Manual: Calculator",
+      "body": "Keep 2–3 significant digits for money; label units; verify sanity (order‑of‑magnitude)."
+    },
+    {
+      "id": "ap-manual-files",
+      "title": "Manual: File Search",
+      "body": "Prefer exact phrases first; show short context around hits; warn on possible false positives."
+    },
+    {
+      "id": "ap-manual-run",
+      "title": "Manual: Code Runner",
+      "body": "State assumptions; use small inputs; show stderr if errors; propose a fix if first run fails."
+    },
+    {
+      "id": "ap-manual-email",
+      "title": "Manual: Email Draft",
+      "body": "Keep <120 words; subject clear; call‑to‑action explicit; neutral tone unless asked."
+    },
+    {
+      "id": "ap-prob-brief",
+      "title": "Problem: Research Brief",
+      "body": "Create a 120‑word brief on a topic with 2–3 citations. Use Web Search and, if needed, Calculator for any simple numbers."
+    },
+    {
+      "id": "ap-prob-budget",
+      "title": "Problem: Budget Tweak",
+      "body": "Given a target monthly savings, compute a revised monthly budget with 3 biggest cuts. Use Calculator; include a simple table."
+    },
+    {
+      "id": "ap-prob-repo",
+      "title": "Problem: Repo Triage",
+      "body": "Find likely failing tests and propose a fix. Use File Search; if helpful, show a simulated Code Runner test output."
+    },
+    {
+      "id": "ap-prob-outreach",
+      "title": "Problem: Compose Outreach",
+      "body": "Draft a brief intro email to a prospect explaining the value prop in 2 lines. Use Email Draft."
+    }
+  ]
+}
+
+
