@@ -61,21 +61,21 @@ export function CognitionColumn({
                 })}
               </select>
             </div>
-            <div className="mt-1 text-xs text-gray-600">
+            <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
               {modelHints[model]?.hint}
             </div>
           </div>
 
           {/* Column: in/out pricing */}
           <div className="hidden lg:flex flex-col leading-tight">
-            <span className="text-xs text-gray-700 tabular-nums">
+            <span className="text-xs text-gray-500 dark:text-gray-400 tabular-nums">
               {price?.input != null || price?.output != null
                 ? `↑ ${price?.input != null ? `$${price.input}` : "—"} | ↓ ${
                     price?.output != null ? `$${price.output}` : "—"
                   }`
                 : "↑ — | ↓ —"}
             </span>
-            <span className="text-[10px] text-gray-500">per 1M tokens</span>
+            <span className="text-[10px] text-gray-400 dark:text-gray-500">per 1M tokens</span>
           </div>
 
           <div className="flex-1" />
@@ -96,7 +96,7 @@ export function CognitionColumn({
           )}
         </div>
         <div className="mt-2 flex items-center gap-3">
-          <label className="flex items-center gap-2 text-xs text-gray-700 dark:text-gray-300">
+          <label className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
             <input
               type="checkbox"
               className="h-4 w-4"

@@ -22,6 +22,7 @@ interface ContextColumnProps {
   embeddingPricing: Record<string, number>;
   onChangeEmbeddingModel: (m: string) => void;
   embeddingHints: Record<string, string>;
+  onUpdateChunk: (id: string, patch: { title?: string; body?: string }) => void;
 }
 
 export function ContextColumn({
@@ -42,13 +43,18 @@ export function ContextColumn({
   availableEmbeddingModels,
   embeddingPricing,
   onChangeEmbeddingModel,
-  embeddingHints
+  embeddingHints,
+  onUpdateChunk
 }: ContextColumnProps) {
   const [phrase, setPhrase] = useState(initialSearchPhrase ?? "");
   const [minSim, setMinSim] = useState(initialMinSimilarity ?? 0.75);
   const [addOpen, setAddOpen] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
+  const [editOpen, setEditOpen] = useState(false);
+  const [editId, setEditId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editBody, setEditBody] = useState("");
 
   const allSelected = useMemo(
     () => chunks.length > 0 && chunks.every((c) => selectedChunkIds.has(c.id)),
@@ -72,6 +78,12 @@ export function ContextColumn({
               checked={checked}
               highlight={highlight}
               score={score}
+              onEdit={(c) => {
+                setEditId(c.id);
+                setEditTitle(c.title);
+                setEditBody(c.body);
+                setEditOpen(true);
+              }}
               onChange={(next) => onToggleChunk(chunk.id, next)}
             />
           );
@@ -89,7 +101,7 @@ export function ContextColumn({
                 <path fillRule="evenodd" d="M12 4.5a.75.75 0 01.75.75V11h5.75a.75.75 0 010 1.5H12.75v5.75a.75.75 0 01-1.5 0V12.5H5.5a.75.75 0 010-1.5h5.75V5.25A.75.75 0 0112 4.5z" clipRule="evenodd" />
               </svg>
             </div>
-            <div className="mt-2 text-sm font-medium text-gray-700">Add Card</div>
+            <div className="mt-2 text-sm font-medium text-gray-700">Add Context</div>
           </div>
         </button>
       </div>
@@ -109,11 +121,11 @@ export function ContextColumn({
                 </option>
               ))}
             </select>
-            <span className="text-xs text-gray-600 tabular-nums">
+            <span className="text-xs text-gray-400 dark:text-gray-500 tabular-nums">
               ↑ ${embeddingPricing[embeddingModel]?.toFixed(2) ?? "—"} per 1M
             </span>
           </div>
-          <div className="mt-1 text-xs text-gray-600 dark:text-gray-400">
+          <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
             {embeddingHints[embeddingModel]}
           </div>
           <div className="flex gap-2">
@@ -207,6 +219,42 @@ export function ContextColumn({
               value={newBody}
               onChange={(e) => setNewBody(e.target.value)}
               placeholder="Enter card content"
+              className="w-full rounded border px-3 py-2 h-32 resize-vertical"
+            />
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        title="Edit Context Card"
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        onPrimary={() => {
+          if (!editId) return;
+          const t = editTitle.trim();
+          const b = editBody.trim();
+          if (!t || !b) return;
+          onUpdateChunk(editId, { title: t, body: b });
+          setEditOpen(false);
+        }}
+        primaryText="Save"
+        secondaryText="Cancel"
+      >
+        <div className="grid grid-cols-1 gap-3">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Title</label>
+            <input
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+              placeholder="Edit card title"
+              className="w-full rounded border px-3 py-2"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Body</label>
+            <textarea
+              value={editBody}
+              onChange={(e) => setEditBody(e.target.value)}
+              placeholder="Edit card content"
               className="w-full rounded border px-3 py-2 h-32 resize-vertical"
             />
           </div>

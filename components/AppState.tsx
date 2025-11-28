@@ -44,6 +44,7 @@ type AppState = {
   toggleChunk: (chunkId: string, checked: boolean) => void;
   toggleAll: (checked: boolean) => void;
   addChunk: (title: string, body: string) => void;
+  updateChunk: (chunkId: string, patch: { title?: string; body?: string }) => void;
   setEmbeddingModel: (m: string) => void;
   search: (phrase: string, min: number) => void;
   setPrompt: (val: string) => void;
@@ -239,6 +240,8 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
         setMinSimilarity(min);
         setSearchError(undefined);
         setIsSearching(true);
+        // Clear any prior highlights immediately so new matches stand out
+        setHighlightedChunkIds(new Set());
         if (!phrase.trim()) {
           setHighlightedChunkIds(new Set());
           setSearchStatus("idle");
@@ -246,6 +249,8 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
           setCosineByChunk(new Map());
           return;
         }
+        // Also clear current selections so only new matches are selected
+        setSelectedChunkIds(new Set());
         const res = await fetch("/api/embeddings/search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -401,6 +406,18 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     [output, prompt, chunks, addChunk]
   );
 
+  const updateChunk = useCallback(
+    (chunkId: string, patch: { title?: string; body?: string }) => {
+      setChunks((prev) =>
+        prev.map((c) => (c.id === chunkId ? { ...c, ...patch } : c))
+      );
+      setUserChunks((prev) =>
+        prev.map((c) => (c.id === chunkId ? { ...c, ...patch } : c))
+      );
+    },
+    []
+  );
+
   const value: AppState = useMemo(
     () => ({
       scenarioId,
@@ -432,6 +449,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       toggleChunk,
       toggleAll,
       addChunk,
+      updateChunk,
       setEmbeddingModel,
       search,
       setPrompt,
@@ -467,6 +485,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       toggleChunk,
       toggleAll,
       addChunk,
+      updateChunk,
       setEmbeddingModel,
       search,
       run,

@@ -104,7 +104,7 @@ export function PredictionColumn({
 
       <div className="column-sticky-footer p-3 rounded-t-md">
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-700 dark:text-gray-300">Viewer</span>
+          <span className="text-sm text-gray-500 dark:text-gray-400">Viewer</span>
           <div className="flex gap-2">
             <button
               className={`rounded border px-3 py-1 ${
@@ -157,21 +157,21 @@ export function PredictionColumn({
             </button>
           </div>
           <div className="ml-auto hidden xl:flex items-center gap-2">
-            <div className="flex flex-col leading-tight text-xs text-gray-700 dark:text-gray-300 tabular-nums">
+            <div className="flex flex-col leading-tight text-xs text-gray-500 dark:text-gray-400 tabular-nums">
               <span>
                 ↑ {inputTokensText} | ↓ {outputTokensText}
               </span>
               <span className="text-[10px] text-gray-500 dark:text-gray-400">tokens</span>
             </div>
-            <div className="flex flex-col leading-tight text-xs text-gray-700 dark:text-gray-300 tabular-nums">
+            <div className="flex flex-col leading-tight text-xs text-gray-500 dark:text-gray-400 tabular-nums">
               <span>{estCostText}</span>
               <span className="text-[10px] text-gray-500 dark:text-gray-400">per 1M: {perMillionNote}</span>
             </div>
-            <div className="text-xs text-gray-700 dark:text-gray-300">{durationText}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{durationText}</div>
           </div>
         </div>
         <div className="mt-2 flex items-center gap-3">
-          <label className="hidden lg:flex items-center gap-2 text-xs text-gray-700 dark:text-gray-300">
+          <label className="hidden lg:flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
             <input
               type="checkbox"
               className="h-4 w-4"

@@ -47,6 +47,7 @@ function AppColumns() {
               onSearch={s.search}
               onChangeTolerance={s.applyTolerance}
               onAddChunk={s.addChunk}
+              onUpdateChunk={s.updateChunk}
               initialSearchPhrase={s.searchPhrase}
               initialMinSimilarity={s.minSimilarity}
               statusText={
