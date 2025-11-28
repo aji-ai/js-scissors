@@ -33,7 +33,7 @@ export function CognitionColumn({
       </h2>
       <div className="flex-1">
         <textarea
-          value={prompt}
+          value={typeof prompt === "string" ? prompt.replaceAll("\\n", "\n") : prompt}
           onChange={(e) => onChangePrompt(e.target.value)}
           className="w-full h-[50vh] rounded border p-3 resize-vertical dark:bg-gray-900 dark:border-gray-700"
           placeholder="Enter your prompt..."

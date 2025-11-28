@@ -57,8 +57,8 @@ export function GlobalScenarioBar({
                   {s.name}
                 </option>
               );
-              // Insert a disabled divider after 'cybersecurity'
-              if (s.id === "cybersecurity") {
+              // Insert a disabled divider after 'healthcare-phr' to keep all domains above
+              if (s.id === "healthcare-phr") {
                 return (
                   <Fragment key={`grp-${s.id}`}>
                     {option}

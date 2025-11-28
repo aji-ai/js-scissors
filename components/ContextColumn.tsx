@@ -81,7 +81,7 @@ export function ContextColumn({
               onEdit={(c) => {
                 setEditId(c.id);
                 setEditTitle(c.title);
-                setEditBody(c.body);
+                setEditBody(typeof c.body === "string" ? c.body.replaceAll("\\n", "\n") : c.body);
                 setEditOpen(true);
               }}
               onChange={(next) => onToggleChunk(chunk.id, next)}

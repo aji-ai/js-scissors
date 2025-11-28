@@ -1,0 +1,34 @@
+{
+  "id": "healthcare-phr",
+  "name": "Healthcare",
+  "samplePrompt": "Extract structured PHR elements from each selected encounter note. Output Markdown only:\\n\\nFor each encounter produce:\\n1) A table with columns: Patient (if present), Chief Complaint, HPI, Medications, Allergies, Vitals, Assessment, Plan, ICD‑10 candidates.\\n2) A short checklist of missing/uncertain fields.\\n\\nKeep entries concise and de‑identified; do not invent data.",
+  "chunks": [
+    {
+      "id": "hc-enc-a",
+      "title": "Encounter A – Primary Care (free‑form)",
+      "body": "Subjective: 34‑year‑old adult presents c/o seasonal allergies, itchy eyes, sneezing x2 wks. Denies fever, SOB, chest pain.\\nMeds: OTC loratadine PRN. No known drug allergies.\\nVitals: BP 118/72, HR 76, Temp 98.6F, RR 14.\\nAssessment: Allergic rhinitis likely.\\nPlan: Start daily intranasal steroid; continue OTC non‑sedating antihistamine; saline rinses; f/u 2–4 wks if no improvement."
+    },
+    {
+      "id": "hc-enc-b",
+      "title": "Encounter B – Telehealth (dialogue style)",
+      "body": "Clinician: Tell me about your cough.\\nPatient: Dry cough 10 days, worse at night. No fever. COVID home test negative.\\nClinician: Using any meds?\\nPatient: Herbal tea only.\\nClinician: Any history of asthma or reflux?\\nPatient: Mild reflux.\\nImpression: post‑viral cough vs reflux‑related cough.\\nPlan: trial PPI for 2 wks, nighttime humidifier, honey tea; return if dyspnea/fever or >4 wks."
+    },
+    {
+      "id": "hc-enc-c",
+      "title": "Encounter C – ER Triage (bullet style)",
+      "body": "• CC: acute ankle pain after misstep; audible pop.\\n• Allergies: NKDA.\\n• Meds: ibuprofen PRN.\\n• Vitals: BP 126/80, HR 82, Temp 98.2F, SpO2 99%.\\n• Exam: swelling, tenderness lateral malleolus, limited ROM.\\n• Plan: RICE, X‑ray to r/o fracture, ankle brace, ortho f/u."
+    },
+    {
+      "id": "hc-enc-d",
+      "title": "Encounter D – Dictation w/ artifacts",
+      "body": "Uh patient, mid‑50s, came in for, um, blood pressure check. Home readings high in the morning. On lisinopril 10 mg. No chest pain. Headaches sometimes. Today's BP 148/92, repeat 142/90. Plan increase lisinopril to 20 mg, lifestyle counseling, log BPs, follow up 2–3 wks."
+    },
+    {
+      "id": "hc-guide",
+      "title": "PHR Field Guide (sections)",
+      "body": "Target fields to extract per encounter: Chief Complaint (reason for visit); HPI (brief timeline & key symptoms); Medications (name + dose if present); Allergies; Vitals; Assessment (working dx); Plan (orders, meds, f/u); ICD‑10 candidates (top 1–3). If patient identifiers appear, keep them de‑identified in the table."
+    }
+  ]
+}
+
+

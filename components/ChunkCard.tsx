@@ -36,7 +36,7 @@ export function ChunkCard({ chunk, checked, onChange, highlight, score, onEdit }
           <div className="min-w-0">
             <div className="font-medium">{chunk.title}</div>
             <div className="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap break-words break-all max-w-full overflow-hidden">
-              {chunk.body}
+              {typeof chunk.body === "string" ? chunk.body.replaceAll("\\n", "\n") : chunk.body}
             </div>
           </div>
         </div>
