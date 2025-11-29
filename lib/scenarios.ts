@@ -1,4 +1,5 @@
 import marketing from "../data/scenarios/marketing.json";
+import basic from "../data/scenarios/basic.json";
 import hr from "../data/scenarios/hr.json";
 import leadership from "../data/scenarios/leadership.json";
 import news from "../data/scenarios/news.json";
@@ -15,6 +16,7 @@ import agentPlayground from "../data/scenarios/agent-playground.json";
 import type { ScenarioPack } from "./types";
 
 export const SCENARIOS: ScenarioPack[] = [
+  basic as ScenarioPack,
   marketing as ScenarioPack,
   hr as ScenarioPack,
   leadership as ScenarioPack,

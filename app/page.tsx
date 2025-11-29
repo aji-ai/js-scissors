@@ -4,17 +4,17 @@ import { ContextColumn } from "@/components/ContextColumn";
 import { CognitionColumn } from "@/components/CognitionColumn";
 import { PredictionColumn } from "@/components/PredictionColumn";
 import { GlobalScenarioBar } from "@/components/GlobalScenarioBar";
-import { SCENARIOS } from "@/lib/scenarios";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Modal } from "@/components/Modal";
 import { useState } from "react";
+import { HeaderControls } from "@/components/HeaderControls";
 
 function AppColumns() {
   const s = useAppState();
   const [aboutOpen, setAboutOpen] = useState(false);
   return (
     <>
-      <header className="mx-auto w-full max-w-screen-2xl 2xl:max-w-[1800px] p-4">
+      <header className="mx-auto w-full max-w-screen-2xl 2xl:max-w-[2200px] p-4">
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-semibold">
@@ -31,11 +31,14 @@ function AppColumns() {
               Embeddings Model × Completion Model → Inference Output
             </p>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-3">
+            <HeaderControls />
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-screen-2xl 2xl:max-w-[1800px] p-4 pb-20">
+      <main className="mx-auto w-full max-w-screen-2xl 2xl:max-w-[2200px] p-4 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-1">
             <ContextColumn
@@ -95,11 +98,7 @@ function AppColumns() {
         </div>
       </main>
 
-      <GlobalScenarioBar
-        scenarioId={s.scenarioId}
-        scenarios={SCENARIOS.map((x) => ({ id: x.id, name: x.name }))}
-        onChangeScenario={s.setScenarioId}
-      />
+      <GlobalScenarioBar />
       <Modal
         title="“Human rational behavior is shaped by a scissors whose blades are the structure of task environments and the computational capabilities of the actor.” — Herbert Simon"
         open={aboutOpen}

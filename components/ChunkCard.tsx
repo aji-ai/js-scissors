@@ -10,6 +10,9 @@ interface ChunkCardProps {
 }
 
 export function ChunkCard({ chunk, checked, onChange, highlight, score, onEdit }: ChunkCardProps) {
+  const bodyText = typeof chunk.body === "string" ? chunk.body.replaceAll("\\n", "\n") : (chunk.body as unknown as string);
+  const sentenceMarks = (bodyText.match(/[.!?]/g) || []).length;
+  const isLong = sentenceMarks >= 2 || bodyText.length > 140 || bodyText.includes("\n");
   return (
     <div>
       <label
@@ -34,9 +37,9 @@ export function ChunkCard({ chunk, checked, onChange, highlight, score, onEdit }
             onChange={(e) => onChange(e.target.checked)}
           />
           <div className="min-w-0">
-            <div className="font-medium">{chunk.title}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap break-words break-all max-w-full overflow-hidden">
-              {typeof chunk.body === "string" ? chunk.body.replaceAll("\\n", "\n") : chunk.body}
+            <div className="font-medium text-sm">{chunk.title}</div>
+            <div className={`${isLong ? "text-[11px] leading-snug" : "text-xs"} text-gray-600 dark:text-gray-300 whitespace-pre-wrap break-words break-all max-w-full overflow-hidden`}>
+              {bodyText}
             </div>
           </div>
         </div>

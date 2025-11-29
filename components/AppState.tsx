@@ -190,12 +190,14 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
   const [output, setOutput] = useState<string>("");
   const [viewerMode, setViewerMode] = useState<ViewerMode>("text");
   const [userChunks, setUserChunks] = useState<ScenarioChunk[]>([]);
+  const [editedChunkIds, setEditedChunkIds] = useState<Set<string>>(new Set());
   const [metrics, setMetrics] = useState<{
     inputTokens?: number;
     outputTokens?: number;
     totalTokens?: number;
     estimatedCostUsd?: number | null;
     durationMs?: number;
+    maxOutputTokensCap?: number;
   }>({});
 
   // Load scenario data on change
@@ -214,6 +216,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       setSimilarityByChunk(new Map());
       setCosineByChunk(new Map());
       setUserChunks([]);
+      setEditedChunkIds(new Set());
     }
   }, [scenarioId]);
 
@@ -258,7 +261,11 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
             scenarioId,
             phrase,
             minSimilarity: min,
-            extraChunks: userChunks,
+            // Send user-created chunks and any edited scenario chunks as overrides
+            extraChunks: [
+              ...userChunks,
+              ...chunks.filter((c) => editedChunkIds.has(c.id))
+            ],
             embeddingModel
           })
         });
@@ -336,6 +343,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
         output: string;
         usage?: { input_tokens?: number; output_tokens?: number; total_tokens?: number };
         durationMs?: number;
+        maxOutputTokens?: number;
       } = await res.json();
       setOutput(data.output || "");
       const inputTokens = data.usage?.input_tokens ?? undefined;
@@ -349,7 +357,14 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
         const outCost = (outputTokens ?? 0) * (pricing.output / 1_000_000);
         estimatedCostUsd = inCost + outCost;
       }
-      setMetrics({ inputTokens, outputTokens, totalTokens, durationMs, estimatedCostUsd });
+      setMetrics({
+        inputTokens,
+        outputTokens,
+        totalTokens,
+        durationMs,
+        estimatedCostUsd,
+        maxOutputTokensCap: data.maxOutputTokens
+      });
     } catch (e) {
       console.error("run error", e);
       setOutput("Error generating response. Check server logs and API key configuration.");
@@ -414,6 +429,11 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       setUserChunks((prev) =>
         prev.map((c) => (c.id === chunkId ? { ...c, ...patch } : c))
       );
+      setEditedChunkIds((prev) => {
+        const next = new Set(prev);
+        next.add(chunkId);
+        return next;
+      });
     },
     []
   );

@@ -1,0 +1,19 @@
+{
+  "id": "basic",
+  "name": "Basic",
+  "samplePrompt": "Finish the sentence...",
+  "chunks": [
+    {
+      "id": "basic-name",
+      "title": "Name",
+      "body": "My name is John."
+    },
+    {
+      "id": "basic-food",
+      "title": "Food",
+      "body": "I like Japanese food."
+    }
+  ]
+}
+
+

@@ -31,13 +31,15 @@ export async function POST(request: Request) {
     );
 
     const t0 = Date.now();
+    const max_output_tokens = 1024; // reference cap for UI indicator
     const response = await openai.responses.create({
       model,
       input,
       // Use the official web search tool type per Responses API docs
       ...(useWeb
         ? { tools: [{ type: "web_search_preview" } as any], tool_choice: "auto" as any }
-        : {})
+        : {}),
+      max_output_tokens
     });
     const durationMs = Date.now() - t0;
 
@@ -58,7 +60,8 @@ export async function POST(request: Request) {
     return NextResponse.json({
       output: outputText ?? "",
       usage: response.usage,
-      durationMs
+      durationMs,
+      maxOutputTokens: max_output_tokens
     });
   } catch (error: unknown) {
     console.error("/api/respond error", error);

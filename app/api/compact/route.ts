@@ -18,7 +18,8 @@ ${text}
     const t0 = Date.now();
     const resp = await openai.responses.create({
       model: "gpt-4o-mini",
-      input: prompt
+      input: prompt,
+      max_output_tokens: 1024
     });
     const anyResp: any = resp as any;
     const outputText: string =

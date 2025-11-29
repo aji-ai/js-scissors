@@ -18,6 +18,7 @@ interface PredictionColumnProps {
     totalTokens?: number;
     estimatedCostUsd?: number | null;
     durationMs?: number;
+    maxOutputTokensCap?: number;
   };
   modelId?: string;
   modelPricing?: Record<string, { input?: number; output?: number }>;
@@ -65,10 +66,6 @@ export function PredictionColumn({
 </html>`;
   }, [mode, output]);
 
-  const inputTokensText =
-    typeof metrics?.inputTokens === "number" ? metrics.inputTokens.toLocaleString() : "—";
-  const outputTokensText =
-    typeof metrics?.outputTokens === "number" ? metrics.outputTokens.toLocaleString() : "—";
   const estCostText =
     typeof metrics?.estimatedCostUsd === "number"
       ? `Est. $${metrics.estimatedCostUsd.toFixed(4)}`
@@ -82,11 +79,46 @@ export function PredictionColumn({
   const durationText =
     typeof metrics?.durationMs === "number" ? `${Math.round(metrics.durationMs)} ms` : "— ms";
 
+  // Token cap progress calculations
+  const cap = metrics?.maxOutputTokensCap ?? undefined;
+  const inTok = typeof metrics?.inputTokens === "number" ? metrics!.inputTokens : undefined;
+  const outTok = typeof metrics?.outputTokens === "number" ? metrics!.outputTokens : undefined;
+  const pctIn = cap ? Math.min(100, Math.round(((inTok ?? 0) / cap) * 100)) : 0;
+  const pctOut = cap ? Math.min(100, Math.round(((outTok ?? 0) / cap) * 100)) : 0;
+  const showCapBar = cap != null && (inTok != null || outTok != null);
+
   return (
     <section className="flex flex-col h-full">
       <h2 className="text-lg font-semibold mb-2">
         <span className="text-5xl align-middle mr-1">✂</span> Prediction
       </h2>
+      {showCapBar && (
+        <div className="mb-2">
+          <div className="relative h-2.5 w-full rounded bg-gray-200 dark:bg-gray-700 overflow-hidden">
+            {/* Input segment */}
+            <div
+              className="absolute left-0 top-0 h-full bg-gray-500/70 dark:bg-gray-400/60"
+              style={{ width: `${pctIn}%` }}
+              title={`Input ~ ${inTok?.toLocaleString() ?? "—"} / ${cap.toLocaleString()}`}
+            />
+            {/* Output segment stacked to the right of input */}
+            <div
+              className="absolute top-0 h-full bg-green-600 dark:bg-green-500 mix-blend-normal opacity-90"
+              style={{
+                left: `${pctIn}%`,
+                width: `${Math.max(0, Math.min(100 - pctIn, pctOut))}%`
+              }}
+              title={`Output ~ ${outTok?.toLocaleString() ?? "—"} / ${cap.toLocaleString()}`}
+            />
+          </div>
+          <div className="mt-1 text-[10px] text-gray-500 dark:text-gray-400 tabular-nums">
+            <span>↑ in {inTok?.toLocaleString() ?? "—"}</span>
+            <span> • </span>
+            <span className="text-green-600 dark:text-green-500">↓ out {outTok?.toLocaleString() ?? "—"}</span>
+            <span> • {cap?.toLocaleString()} max tokens</span>
+          </div>
+        </div>
+      )}
       <div className="flex-1 overflow-auto rounded border bg-white p-3 dark:bg-gray-800 dark:border-gray-700">
         {mode === "text" && <pre className="whitespace-pre-wrap text-sm">{output}</pre>}
         {mode === "markdown" && (
@@ -157,12 +189,6 @@ export function PredictionColumn({
             </button>
           </div>
           <div className="ml-auto hidden xl:flex items-center gap-2">
-            <div className="flex flex-col leading-tight text-xs text-gray-500 dark:text-gray-400 tabular-nums">
-              <span>
-                ↑ {inputTokensText} | ↓ {outputTokensText}
-              </span>
-              <span className="text-[10px] text-gray-500 dark:text-gray-400">tokens</span>
-            </div>
             <div className="flex flex-col leading-tight text-xs text-gray-500 dark:text-gray-400 tabular-nums">
               <span>{estCostText}</span>
               <span className="text-[10px] text-gray-500 dark:text-gray-400">per 1M: {perMillionNote}</span>

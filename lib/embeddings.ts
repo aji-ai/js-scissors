@@ -1,9 +1,11 @@
 import { openai } from "./openai";
 import type { ScenarioPack, EmbeddingSearchResult, ScenarioChunk } from "./types";
 
-type ChunkEmbeddingCache = Map<string, number[]>; // chunkId -> vector
+// Internal cache entry stores vector and a content hash to detect edits
+type CacheEntry = { vec: number[]; hash: string };
+type InternalEmbeddingCache = Map<string, CacheEntry>; // chunkId -> entry
 // cache key is scenarioId|model
-const scenarioEmbeddingsCache = new Map<string, ChunkEmbeddingCache>();
+const scenarioEmbeddingsCache = new Map<string, InternalEmbeddingCache>();
 
 export function cosineSimilarity(a: number[], b: number[]): number {
   if (a.length !== b.length) return 0;
@@ -47,23 +49,52 @@ async function embedBatch(inputs: string[], model: string): Promise<number[][]> 
   return resp.data.map((d) => d.embedding).filter(Boolean) as number[][];
 }
 
+// Fast, simple content hash (djb2 variant) for change detection
+function hashContent(text: string): string {
+  let h = 5381;
+  for (let i = 0; i < text.length; i++) {
+    h = (h * 33) ^ text.charCodeAt(i);
+  }
+  return (h >>> 0).toString(16);
+}
+
 export async function getScenarioChunkEmbeddings(
   scenario: ScenarioPack,
   model: string
-): Promise<ChunkEmbeddingCache> {
+): Promise<Map<string, number[]>> {
   const cacheKey = `${scenario.id}|${model}`;
-  const cached = scenarioEmbeddingsCache.get(cacheKey);
-  if (cached) return cached;
+  let internal = scenarioEmbeddingsCache.get(cacheKey);
+  if (!internal) {
+    internal = new Map<string, CacheEntry>();
+    scenarioEmbeddingsCache.set(cacheKey, internal);
+  }
 
-  const inputs = scenario.chunks.map((c) => `${c.title}\n\n${c.body}`);
-  const vecs = await embedBatch(inputs, model);
-  const vectors = new Map<string, number[]>();
-  scenario.chunks.forEach((chunk, idx) => {
-    const emb = vecs[idx];
-    if (emb) vectors.set(chunk.id, emb);
-  });
-  scenarioEmbeddingsCache.set(cacheKey, vectors);
-  return vectors;
+  // Determine which chunks are missing or stale (content changed)
+  const toEmbed: { id: string; text: string; hash: string }[] = [];
+  for (const c of scenario.chunks) {
+    const text = `${c.title}\n\n${c.body}`;
+    const h = hashContent(text);
+    const entry = internal.get(c.id);
+    if (!entry || entry.hash !== h) {
+      toEmbed.push({ id: c.id, text, hash: h });
+    }
+  }
+
+  // (Re)embed as needed and update cache
+  if (toEmbed.length > 0) {
+    const vecs = await embedBatch(toEmbed.map((t) => t.text), model);
+    toEmbed.forEach((t, i) => {
+      const v = vecs[i];
+      if (v) internal!.set(t.id, { vec: v, hash: t.hash });
+    });
+  }
+
+  // Return a public map of vectors only
+  const publicVectors = new Map<string, number[]>();
+  for (const [id, entry] of internal.entries()) {
+    publicVectors.set(id, entry.vec);
+  }
+  return publicVectors;
 }
 
 export async function computeAllSimilarities(
@@ -78,7 +109,10 @@ export async function computeAllSimilarities(
     embedBatch((extraChunks ?? []).map((c) => `${c.title}\n\n${c.body}`), model)
   ]);
   const all: Array<{ chunkId: string; dot: number; cosine: number }> = [];
+  // If extraChunks contain overrides for existing ids, prefer the override and skip cached one
+  const overrideIds = new Set((extraChunks ?? []).map((c) => c.id));
   for (const [chunkId, vector] of cache.entries()) {
+    if (overrideIds.has(chunkId)) continue;
     all.push({
       chunkId,
       dot: dotProduct(queryVec, vector),

@@ -40,6 +40,7 @@ export interface RespondResult {
     total_tokens?: number;
   };
   durationMs?: number;
+  maxOutputTokens?: number;
 }
 
 

@@ -210,7 +210,7 @@ export function ContextColumn({
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               placeholder="Enter card title"
-              className="w-full rounded border px-3 py-2"
+              className="w-full rounded border px-3 py-2 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
             />
           </div>
           <div>
@@ -219,7 +219,7 @@ export function ContextColumn({
               value={newBody}
               onChange={(e) => setNewBody(e.target.value)}
               placeholder="Enter card content"
-              className="w-full rounded border px-3 py-2 h-32 resize-vertical"
+              className="w-full rounded border px-3 py-2 h-32 resize-vertical dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
             />
           </div>
         </div>
@@ -246,7 +246,7 @@ export function ContextColumn({
               value={editTitle}
               onChange={(e) => setEditTitle(e.target.value)}
               placeholder="Edit card title"
-              className="w-full rounded border px-3 py-2"
+              className="w-full rounded border px-3 py-2 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
             />
           </div>
           <div>
@@ -255,7 +255,7 @@ export function ContextColumn({
               value={editBody}
               onChange={(e) => setEditBody(e.target.value)}
               placeholder="Edit card content"
-              className="w-full rounded border px-3 py-2 h-32 resize-vertical"
+              className="w-full rounded border px-3 py-2 h-32 resize-vertical dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
             />
           </div>
         </div>
