@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getScenarioById } from "@/lib/scenarios";
 import { searchChunksByPhrase, computeAllSimilarities } from "@/lib/embeddings";
 import type { EmbeddingSearchRequest, ScenarioChunk } from "@/lib/types";
+import { openaiFromRequest } from "@/lib/openai";
 
 export async function POST(request: Request) {
   try {
@@ -37,9 +38,10 @@ export async function POST(request: Request) {
 
     const model = embeddingModel && typeof embeddingModel === "string" ? embeddingModel : "text-embedding-3-small";
 
+    const openai = openaiFromRequest(request);
     const [results, scores] = await Promise.all([
-      searchChunksByPhrase(scenario, phrase, threshold, model, safeExtras),
-      computeAllSimilarities(scenario, phrase, model, safeExtras)
+      searchChunksByPhrase(openai, scenario, phrase, threshold, model, safeExtras),
+      computeAllSimilarities(openai, scenario, phrase, model, safeExtras)
     ]);
     return NextResponse.json({ results, scores });
   } catch (error: unknown) {

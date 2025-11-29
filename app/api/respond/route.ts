@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { openai } from "@/lib/openai";
+import { openaiFromRequest } from "@/lib/openai";
 import type { RespondRequestBody } from "@/lib/types";
 
 function buildInputText(prompt: string, context: { title: string; body: string }[]) {
@@ -32,6 +32,7 @@ export async function POST(request: Request) {
 
     const t0 = Date.now();
     const max_output_tokens = 1024; // reference cap for UI indicator
+    const openai = openaiFromRequest(request);
     const response = await openai.responses.create({
       model,
       input,

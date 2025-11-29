@@ -61,9 +61,6 @@ export function CognitionColumn({
                 })}
               </select>
             </div>
-            <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              {modelHints[model]?.hint}
-            </div>
           </div>
 
           {/* Column: in/out pricing */}
@@ -94,6 +91,10 @@ export function CognitionColumn({
               aria-label="Loading"
             />
           )}
+        </div>
+        {/* Full-width model description below selector row */}
+        <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+          {modelHints[model]?.hint}
         </div>
         <div className="mt-2 flex items-center gap-3">
           <label className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">

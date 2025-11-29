@@ -1,4 +1,4 @@
-import { openai } from "./openai";
+import type OpenAI from "openai";
 import type { ScenarioPack, EmbeddingSearchResult, ScenarioChunk } from "./types";
 
 // Internal cache entry stores vector and a content hash to detect edits
@@ -30,8 +30,8 @@ export function dotProduct(a: number[], b: number[]): number {
   return dot;
 }
 
-async function embedText(text: string, model: string): Promise<number[]> {
-  const resp = await openai.embeddings.create({
+async function embedText(client: OpenAI, text: string, model: string): Promise<number[]> {
+  const resp = await client.embeddings.create({
     model,
     input: text
   });
@@ -40,9 +40,9 @@ async function embedText(text: string, model: string): Promise<number[]> {
   return v;
 }
 
-async function embedBatch(inputs: string[], model: string): Promise<number[][]> {
+async function embedBatch(client: OpenAI, inputs: string[], model: string): Promise<number[][]> {
   if (inputs.length === 0) return [];
-  const resp = await openai.embeddings.create({
+  const resp = await client.embeddings.create({
     model,
     input: inputs
   });
@@ -59,6 +59,7 @@ function hashContent(text: string): string {
 }
 
 export async function getScenarioChunkEmbeddings(
+  client: OpenAI,
   scenario: ScenarioPack,
   model: string
 ): Promise<Map<string, number[]>> {
@@ -82,7 +83,7 @@ export async function getScenarioChunkEmbeddings(
 
   // (Re)embed as needed and update cache
   if (toEmbed.length > 0) {
-    const vecs = await embedBatch(toEmbed.map((t) => t.text), model);
+    const vecs = await embedBatch(client, toEmbed.map((t) => t.text), model);
     toEmbed.forEach((t, i) => {
       const v = vecs[i];
       if (v) internal!.set(t.id, { vec: v, hash: t.hash });
@@ -98,15 +99,16 @@ export async function getScenarioChunkEmbeddings(
 }
 
 export async function computeAllSimilarities(
+  client: OpenAI,
   scenario: ScenarioPack,
   phrase: string,
   model: string,
   extraChunks?: ScenarioChunk[]
 ): Promise<Array<{ chunkId: string; dot: number; cosine: number }>> {
   const [cache, queryVec, extraVecs] = await Promise.all([
-    getScenarioChunkEmbeddings(scenario, model),
-    embedText(phrase, model),
-    embedBatch((extraChunks ?? []).map((c) => `${c.title}\n\n${c.body}`), model)
+    getScenarioChunkEmbeddings(client, scenario, model),
+    embedText(client, phrase, model),
+    embedBatch(client, (extraChunks ?? []).map((c) => `${c.title}\n\n${c.body}`), model)
   ]);
   const all: Array<{ chunkId: string; dot: number; cosine: number }> = [];
   // If extraChunks contain overrides for existing ids, prefer the override and skip cached one
@@ -135,13 +137,14 @@ export async function computeAllSimilarities(
 }
 
 export async function searchChunksByPhrase(
+  client: OpenAI,
   scenario: ScenarioPack,
   phrase: string,
   minSimilarity: number,
   model: string,
   extraChunks?: ScenarioChunk[]
 ): Promise<EmbeddingSearchResult[]> {
-  const all = await computeAllSimilarities(scenario, phrase, model, extraChunks);
+  const all = await computeAllSimilarities(client, scenario, phrase, model, extraChunks);
   return all
     .filter((r) => r.cosine >= minSimilarity)
     .map((r) => ({ chunkId: r.chunkId, similarity: r.cosine }));

@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { openai } from "@/lib/openai";
+import { openaiFromRequest } from "@/lib/openai";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const openai = openaiFromRequest(request);
     // Minimal/cheap check: create a tiny embedding
     const resp = await openai.embeddings.create({
       model: "text-embedding-3-small",

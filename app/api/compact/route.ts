@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { openai } from "@/lib/openai";
+import { openaiFromRequest } from "@/lib/openai";
 
 export async function POST(request: Request) {
   try {
@@ -16,6 +16,7 @@ ${text}
 --- END REPLY ---`;
 
     const t0 = Date.now();
+    const openai = openaiFromRequest(request);
     const resp = await openai.responses.create({
       model: "gpt-4o-mini",
       input: prompt,

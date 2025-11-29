@@ -254,9 +254,15 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
         }
         // Also clear current selections so only new matches are selected
         setSelectedChunkIds(new Set());
+        // Attach local API key if present
+        const localKey =
+          typeof window !== "undefined" ? localStorage.getItem("openai_api_key") : null;
         const res = await fetch("/api/embeddings/search", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(localKey ? { "x-openai-key": localKey } : {})
+          },
           body: JSON.stringify({
             scenarioId,
             phrase,
@@ -333,9 +339,14 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       setIsProcessing(true);
       const allChunks = [...chunks, ...userChunks];
       const selected = allChunks.filter((c) => selectedChunkIds.has(c.id));
+      const localKey =
+        typeof window !== "undefined" ? localStorage.getItem("openai_api_key") : null;
       const res = await fetch("/api/respond", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(localKey ? { "x-openai-key": localKey } : {})
+        },
         body: JSON.stringify({ model: modelId, prompt, context: selected, useWeb })
       });
       if (!res.ok) throw new Error(`Respond failed: ${res.status}`);
@@ -400,9 +411,14 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       const isLong = assistantText.length > 800;
       if (makeCompact && isLong) {
         try {
+          const localKey =
+            typeof window !== "undefined" ? localStorage.getItem("openai_api_key") : null;
           const res = await fetch("/api/compact", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              ...(localKey ? { "x-openai-key": localKey } : {})
+            },
             body: JSON.stringify({ text: assistantText, targetTokens: 128 })
           });
           if (res.ok) {
