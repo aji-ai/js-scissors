@@ -352,7 +352,11 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       const durationMs = data.durationMs ?? undefined;
       let estimatedCostUsd: number | null = null;
       const pricing = PRICING_PER_MTOK[modelId];
-      if (pricing) {
+      if (
+        pricing &&
+        typeof pricing.input === "number" &&
+        typeof pricing.output === "number"
+      ) {
         const inCost = (inputTokens ?? 0) * (pricing.input / 1_000_000);
         const outCost = (outputTokens ?? 0) * (pricing.output / 1_000_000);
         estimatedCostUsd = inCost + outCost;
