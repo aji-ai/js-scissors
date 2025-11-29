@@ -35,7 +35,7 @@ export function CognitionColumn({
         <textarea
           value={typeof prompt === "string" ? prompt.replaceAll("\\n", "\n") : prompt}
           onChange={(e) => onChangePrompt(e.target.value)}
-          className="w-full h-[50vh] rounded border p-3 resize-vertical dark:bg-gray-900 dark:border-gray-700"
+          className="w-full h-40 md:h-[50vh] rounded border p-3 resize-vertical dark:bg-gray-900 dark:border-gray-700"
           placeholder="Enter your prompt..."
         />
       </div>
@@ -43,9 +43,9 @@ export function CognitionColumn({
       <div className="column-sticky-footer p-3 rounded-t-md">
         <div className="flex items-start gap-4">
           {/* Column: selector + full-width blurb below */}
-          <div className="flex flex-col min-w-[260px] flex-1">
+          <div className="flex flex-col min-w-0 sm:min-w-[260px] flex-none">
             <div className="flex items-center gap-3">
-              <label className="text-sm text-gray-700">Model</label>
+              <label className="text-sm text-gray-500 dark:text-gray-400">Model</label>
               <select
                 className="rounded border px-3 py-2 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100"
                 value={model}
@@ -64,7 +64,7 @@ export function CognitionColumn({
           </div>
 
           {/* Column: in/out pricing */}
-          <div className="hidden lg:flex flex-col leading-tight">
+          <div className="flex flex-1 flex-col leading-tight">
             <span className="text-xs text-gray-500 dark:text-gray-400 tabular-nums">
               {price?.input != null || price?.output != null
                 ? `↑ ${price?.input != null ? `$${price.input}` : "—"} | ↓ ${
@@ -75,7 +75,6 @@ export function CognitionColumn({
             <span className="text-[10px] text-gray-400 dark:text-gray-500">per 1M tokens</span>
           </div>
 
-          <div className="flex-1" />
           <button
             disabled={isProcessing}
             onClick={onRun}

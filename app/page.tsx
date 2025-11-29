@@ -15,9 +15,9 @@ function AppColumns() {
   return (
     <>
       <header className="mx-auto w-full max-w-screen-2xl 2xl:max-w-[2200px] p-4">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-semibold">
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div className="max-[960px]:w-full">
+            <h1 className="font-semibold xl:text-3xl lg:text-2xl md:text-xl max-[960px]:text-lg">
               <button
                 type="button"
                 onClick={() => setAboutOpen(true)}
@@ -27,20 +27,23 @@ function AppColumns() {
                 Context × Cognition → Prediction
               </button>
             </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
+            <p className="text-gray-600 dark:text-gray-300 xl:text-base lg:text-sm md:text-sm max-[960px]:text-xs hidden sm:block">
               Embeddings Model × Completion Model → Inference Output
             </p>
+            <div className="mt-2 max-[960px]:w-full">
+              <HeaderControls showScenario={true} showKeyButton={false} />
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <HeaderControls />
+          <div className="hidden sm:flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
+            <HeaderControls showScenario={false} showKeyButton={true} />
             <ThemeToggle />
           </div>
         </div>
       </header>
 
       <main className="mx-auto w-full max-w-screen-2xl 2xl:max-w-[2200px] p-4 pb-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="md:col-span-1">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+          <div className="lg:col-span-1 xl:col-span-1">
             <ContextColumn
               chunks={s.chunks}
               selectedChunkIds={s.selectedChunkIds}
@@ -69,7 +72,7 @@ function AppColumns() {
               embeddingHints={s.embeddingHints}
             />
           </div>
-          <div className="md:col-span-1">
+          <div className="lg:col-span-1 xl:col-span-1">
             <CognitionColumn
               prompt={s.prompt}
               onChangePrompt={s.setPrompt}
@@ -84,7 +87,7 @@ function AppColumns() {
               isProcessing={s.isProcessing}
             />
           </div>
-          <div className="md:col-span-1">
+          <div className="lg:col-span-2 xl:col-span-1">
             <PredictionColumn
               output={s.output}
               mode={s.viewerMode}

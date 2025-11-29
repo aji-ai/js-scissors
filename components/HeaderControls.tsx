@@ -4,7 +4,12 @@ import { useAppState } from "@/components/AppState";
 import { SCENARIOS } from "@/lib/scenarios";
 import { Modal } from "@/components/Modal";
 
-export function HeaderControls() {
+type HeaderControlsProps = {
+  showScenario?: boolean;
+  showKeyButton?: boolean;
+};
+
+export function HeaderControls({ showScenario = true, showKeyButton = true }: HeaderControlsProps) {
   const s = useAppState();
   const [testing, setTesting] = useState(false);
   const [status, setStatus] = useState<"idle" | "ok" | "error">("idle");
@@ -74,48 +79,52 @@ export function HeaderControls() {
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex items-center gap-3">
-        <span className="text-sm text-gray-700 dark:text-gray-200">Scenario</span>
-        <select
-          className="rounded border px-3 py-2 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100"
-          value={s.scenarioId}
-          onChange={(e) => s.setScenarioId(e.target.value)}
-        >
-          <option key="__divider_domains__" value="__divider_domains__" disabled>
-            ───────── Domains ─────────
-          </option>
-          {SCENARIOS.map((sc) => {
-            const option = (
-              <option key={sc.id} value={sc.id}>
-                {sc.name}
-              </option>
-            );
-            if (sc.id === "healthcare-phr") {
-              return (
-                <Fragment key={`grp-${sc.id}`}>
-                  {option}
-                  <option key="__divider__" value="__divider__" disabled>
-                    ───────── Applications ─────────
-                  </option>
-                </Fragment>
+    <div className="contents">
+      {showScenario && (
+        <div className="flex items-center gap-3 max-[960px]:w-full">
+          <span className="text-sm text-gray-700 dark:text-gray-200">Scenario</span>
+          <select
+            className="rounded border px-2 py-1 text-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 max-[960px]:flex-1 max-[960px]:w-auto"
+            value={s.scenarioId}
+            onChange={(e) => s.setScenarioId(e.target.value)}
+          >
+            <option key="__divider_domains__" value="__divider_domains__" disabled>
+              ───────── Domains ─────────
+            </option>
+            {SCENARIOS.map((sc) => {
+              const option = (
+                <option key={sc.id} value={sc.id}>
+                  {sc.name}
+                </option>
               );
-            }
-            return option;
-          })}
-        </select>
-      </div>
-      <button
-        onClick={openModal}
-        className="rounded border p-2 bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
-        aria-label="Manage API Key"
-        title="Manage API Key"
-      >
-        {/* Bootstrap Icons: key-fill */}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="h-4 w-4 fill-current">
-          <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
-        </svg>
-      </button>
+              if (sc.id === "healthcare-phr") {
+                return (
+                  <Fragment key={`grp-${sc.id}`}>
+                    {option}
+                    <option key="__divider__" value="__divider__" disabled>
+                      ───────── Applications ─────────
+                    </option>
+                  </Fragment>
+                );
+              }
+              return option;
+            })}
+          </select>
+        </div>
+      )}
+      {showKeyButton && (
+        <button
+          onClick={openModal}
+          className="rounded border p-2 bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
+          aria-label="Manage API Key"
+          title="Manage API Key"
+        >
+          {/* Bootstrap Icons: key-fill */}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="h-4 w-4 fill-current">
+            <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+          </svg>
+        </button>
+      )}
 
       <Modal
         title="API Key"

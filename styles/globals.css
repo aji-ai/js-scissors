@@ -4,11 +4,11 @@
 
 /* Layout helpers */
 .column-sticky-footer {
-  @apply sticky bottom-16 bg-white/75 backdrop-blur border-t border-gray-200 dark:bg-gray-900/80 dark:border-gray-700;
+  @apply md:sticky md:bottom-12 bg-white/75 backdrop-blur border-t border-gray-200 dark:bg-gray-900/80 dark:border-gray-700;
 }
 
 .global-bottom-bar {
-  @apply fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur border-t border-gray-200 dark:bg-gray-900/90 dark:border-gray-700;
+  @apply fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur border-t border-gray-200 dark:bg-gray-900/90 dark:border-gray-700 h-12 flex items-center;
 }
 
 

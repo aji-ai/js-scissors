@@ -66,7 +66,7 @@ export function ContextColumn({
       <h2 className="text-lg font-semibold mb-2">
         <span className="text-5xl align-middle mr-1">✁</span> Context
       </h2>
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 pb-24">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 pb-6 md:pb-24">
         {chunks.map((chunk) => {
           const checked = selectedChunkIds.has(chunk.id);
           const highlight = highlightedChunkIds?.has(chunk.id);
@@ -109,7 +109,7 @@ export function ContextColumn({
       <div className="column-sticky-footer p-3 rounded-t-md">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
-            <label className="text-sm text-gray-700">Model</label>
+            <label className="text-sm text-gray-500 dark:text-gray-400">Model</label>
             <select
               className="rounded border px-3 py-2 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100"
               value={embeddingModel}
@@ -160,7 +160,7 @@ export function ContextColumn({
             )}
           </div>
           <div className="flex items-center gap-3">
-            <label className="text-sm text-gray-700 min-w-16">Match</label>
+            <label className="text-sm text-gray-500 dark:text-gray-400 min-w-16">Match</label>
             <input
               type="range"
               min={0}
