@@ -18,7 +18,7 @@ export function ChunkCard({ chunk, checked, onChange, highlight, score, onEdit }
       <label
         className={`relative flex flex-col rounded-md border p-3 pr-7 pb-6 cursor-pointer gap-2 transition overflow-hidden
         ${checked ? "border-blue-500 ring-2 ring-blue-200 dark:ring-blue-900/40" : "border-gray-200 dark:border-gray-700"}
-        ${highlight ? "bg-yellow-50 dark:bg-yellow-900/20" : "bg-white dark:bg-gray-800"}
+        ${highlight ? "bg-yellow-50 dark:bg-yellow-500/20" : "bg-white dark:bg-gray-800"}
       `}
       >
         {typeof score === "number" && (

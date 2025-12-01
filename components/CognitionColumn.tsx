@@ -41,10 +41,10 @@ export function CognitionColumn({
       </div>
 
       <div className="column-sticky-footer p-3 rounded-t-md">
-        <div className="flex items-start gap-4">
+        <div className="flex items-start gap-3">
           {/* Column: selector + full-width blurb below */}
-          <div className="flex flex-col min-w-0 sm:min-w-[260px] flex-none">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col min-w-0 flex-none">
+            <div className="flex items-center gap-2">
               <label className="text-sm text-gray-500 dark:text-gray-400">Model</label>
               <select
                 className="rounded border px-3 py-2 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100"
@@ -64,7 +64,7 @@ export function CognitionColumn({
           </div>
 
           {/* Column: in/out pricing */}
-          <div className="flex flex-1 flex-col leading-tight">
+          <div className="flex flex-1 flex-col leading-tight min-w-0">
             <span className="text-xs text-gray-500 dark:text-gray-400 tabular-nums">
               {price?.input != null || price?.output != null
                 ? `↑ ${price?.input != null ? `$${price.input}` : "—"} | ↓ ${
@@ -78,18 +78,19 @@ export function CognitionColumn({
           <button
             disabled={isProcessing}
             onClick={onRun}
-            className={`rounded px-4 py-2 ${
-              isProcessing ? "bg-gray-300 text-gray-700" : "bg-green-600 text-white"
+            className={`rounded px-4 py-2 flex items-center justify-center min-w-[80px] ${
+              isProcessing ? "bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-gray-200" : "bg-green-600 text-white"
             }`}
           >
-            {isProcessing ? "Running..." : "Run"}
+            {isProcessing ? (
+              <div
+                className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-gray-500 border-t-transparent dark:border-gray-400 dark:border-t-transparent"
+                aria-label="Loading"
+              />
+            ) : (
+              "Run"
+            )}
           </button>
-          {isProcessing && (
-            <div
-              className="ml-2 inline-block h-5 w-5 animate-spin rounded-full border-2 border-gray-400 border-t-transparent"
-              aria-label="Loading"
-            />
-          )}
         </div>
         {/* Full-width model description below selector row */}
         <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">

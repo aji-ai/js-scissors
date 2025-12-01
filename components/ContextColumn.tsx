@@ -142,7 +142,7 @@ export function ContextColumn({
               }}
             />
             <button
-              className={`rounded px-4 py-2 border ${
+              className={`rounded px-4 py-2 border flex items-center justify-center min-w-[96px] ${
                 isSearching
                   ? "bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                   : "bg-blue-600 text-white dark:bg-blue-600 dark:text-white dark:border-blue-600"
@@ -150,14 +150,15 @@ export function ContextColumn({
               onClick={() => onSearch(phrase, minSim)}
               disabled={isSearching}
             >
-              {isSearching ? "Searching..." : "Search"}
+              {isSearching ? (
+                <div
+                  className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-gray-500 border-t-transparent dark:border-gray-400 dark:border-t-transparent"
+                  aria-label="Loading"
+                />
+              ) : (
+                "Search"
+              )}
             </button>
-            {isSearching && (
-              <div
-                className="ml-1 inline-block h-5 w-5 animate-spin rounded-full border-2 border-gray-400 border-t-transparent"
-                aria-label="Loading"
-              />
-            )}
           </div>
           <div className="flex items-center gap-3">
             <label className="text-sm text-gray-500 dark:text-gray-400 min-w-16">Match</label>
