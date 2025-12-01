@@ -4,7 +4,15 @@ import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Context × Cognition → Prediction",
-  description: "Embeddings Model × Completion Model → Inference Output"
+  description: "Embeddings Model × Completion Model → Inference Output",
+  icons: {
+    icon: [
+      {
+        url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>✂️</text></svg>",
+        type: "image/svg+xml"
+      }
+    ]
+  }
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
