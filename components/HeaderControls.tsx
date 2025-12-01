@@ -88,20 +88,32 @@ export function HeaderControls({ showScenario = true, showKeyButton = true }: He
             value={s.scenarioId}
             onChange={(e) => s.setScenarioId(e.target.value)}
           >
-            <option key="__divider_domains__" value="__divider_domains__" disabled>
-              ───────── Domains ─────────
+            <option key="__divider_foundations__" value="__divider_foundations__" disabled>
+              ───────── Foundations ─────────
             </option>
-            {SCENARIOS.map((sc) => {
+            {SCENARIOS.map((sc, idx) => {
               const option = (
                 <option key={sc.id} value={sc.id}>
                   {sc.name}
                 </option>
               );
+              // Add Domains divider after agent-playground (index 2)
+              if (sc.id === "agent-playground") {
+                return (
+                  <Fragment key={`grp-${sc.id}`}>
+                    {option}
+                    <option key="__divider_domains__" value="__divider_domains__" disabled>
+                      ───────── Domains ─────────
+                    </option>
+                  </Fragment>
+                );
+              }
+              // Add Applications divider after healthcare-phr
               if (sc.id === "healthcare-phr") {
                 return (
                   <Fragment key={`grp-${sc.id}`}>
                     {option}
-                    <option key="__divider__" value="__divider__" disabled>
+                    <option key="__divider_applications__" value="__divider_applications__" disabled>
                       ───────── Applications ─────────
                     </option>
                   </Fragment>

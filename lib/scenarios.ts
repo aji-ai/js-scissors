@@ -16,16 +16,19 @@ import agentPlayground from "../data/scenarios/agent-playground.json";
 import type { ScenarioPack } from "./types";
 
 export const SCENARIOS: ScenarioPack[] = [
+  // Foundations
   basic as ScenarioPack,
+  chatbot as ScenarioPack,
+  agentPlayground as ScenarioPack,
+  // Domains
   marketing as ScenarioPack,
   hr as ScenarioPack,
   leadership as ScenarioPack,
   news as ScenarioPack,
   cybersecurity as ScenarioPack,
   healthcarePHR as ScenarioPack,
-  chatbot as ScenarioPack,
+  // Applications
   userResearch as ScenarioPack,
-  agentPlayground as ScenarioPack,
   landing as ScenarioPack,
   emailTriage as ScenarioPack,
   vendorSecurity as ScenarioPack,
