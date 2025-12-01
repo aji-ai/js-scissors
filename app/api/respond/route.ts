@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     );
 
     const t0 = Date.now();
-    const max_output_tokens = 1024; // reference cap for UI indicator
+    const max_output_tokens = 4096; // reference cap for UI indicator
     const openai = openaiFromRequest(request);
     const response = await openai.responses.create({
       model,

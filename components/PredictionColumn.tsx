@@ -37,17 +37,39 @@ export function PredictionColumn({
   const iframeDoc = useMemo(() => {
     if (mode !== "html") return "";
     const raw = output ?? "";
-    // Extract fenced ```html blocks if present
-    const fenced = raw.match(/```html([\s\S]*?)```/i)?.[1] ?? raw;
-    const trimmed = fenced.trim();
+    
+    // Extract HTML from various formats:
+    // 1. Fenced code blocks: ```html, ```HTML, ```htm (case-insensitive)
+    // 2. Raw HTML starting with <!DOCTYPE or <html
+    let extracted = raw;
+    const fencedMatch = raw.match(/```(html|htm)/i);
+    if (fencedMatch) {
+      // Extract content between fenced markers
+      const fencedContent = raw.match(/```(?:html|htm)([\s\S]*?)```/i)?.[1];
+      if (fencedContent) {
+        extracted = fencedContent;
+      }
+    } else if (/^\s*<!doctype html>/i.test(raw) || /^\s*<html[\s>]/i.test(raw)) {
+      // Raw HTML document detected - use as-is
+      extracted = raw;
+    }
+    
+    const trimmed = extracted.trim();
     const sanitized = DOMPurify.sanitize(trimmed, {
       USE_PROFILES: { html: true },
       WHOLE_DOCUMENT: true
     } as DOMPurifyConfig);
+    
+    // Check if this is a complete HTML document
     const hasHtmlShell =
       /^<!doctype html>/i.test(sanitized) ||
       /<html[\s>]/i.test(sanitized);
     if (hasHtmlShell) return sanitized;
+    
+    // Check if this is a partial HTML fragment (common tags that indicate HTML content)
+    const isLikelyHtmlFragment =
+      /<(div|section|article|header|footer|main|nav|aside|body|head|style|script|link|meta)[\s>]/i.test(sanitized);
+    
     // Wrap partial HTML into a minimal document to isolate in iframe
     return `<!DOCTYPE html>
 <html lang="en">
@@ -127,7 +149,23 @@ export function PredictionColumn({
               remarkPlugins={[remarkGfm, remarkBreaks]}
               rehypePlugins={[rehypeRaw, rehypeSanitize]}
             >
-              {output}
+              {(() => {
+                // If raw HTML document is detected, strip the DOCTYPE and html/body wrappers
+                // to prevent breaking markdown rendering, but preserve inner content
+                const raw = output ?? "";
+                if (/^\s*<!doctype html>/i.test(raw) || /^\s*<html[\s>]/i.test(raw)) {
+                  // Extract body content if present, otherwise extract everything inside <html>
+                  const bodyMatch = raw.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+                  if (bodyMatch) return bodyMatch[1];
+                  const htmlMatch = raw.match(/<html[^>]*>([\s\S]*?)<\/html>/i);
+                  if (htmlMatch) {
+                    // Remove <head> section if present
+                    const withoutHead = htmlMatch[1].replace(/<head[^>]*>[\s\S]*?<\/head>/i, "");
+                    return withoutHead;
+                  }
+                }
+                return raw;
+              })()}
             </ReactMarkdown>
           </div>
         )}
