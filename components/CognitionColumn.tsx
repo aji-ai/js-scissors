@@ -35,6 +35,12 @@ export function CognitionColumn({
         <textarea
           value={typeof prompt === "string" ? prompt.replaceAll("\\n", "\n") : prompt}
           onChange={(e) => onChangePrompt(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && (e.metaKey || e.ctrlKey) && !isProcessing) {
+              e.preventDefault();
+              onRun();
+            }
+          }}
           className="w-full h-40 md:h-[50vh] rounded border p-3 resize-vertical dark:bg-gray-900 dark:border-gray-700"
           placeholder="Enter your prompt..."
         />
@@ -78,9 +84,10 @@ export function CognitionColumn({
           <button
             disabled={isProcessing}
             onClick={onRun}
-            className={`rounded px-4 py-2 flex items-center justify-center min-w-[80px] ${
+            className={`rounded px-4 py-2 flex items-center justify-center gap-1.5 min-w-[80px] ${
               isProcessing ? "bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-gray-200" : "bg-green-600 text-white"
             }`}
+            title="Click or press ⌘+Enter (Ctrl+Enter on Windows) to run"
           >
             {isProcessing ? (
               <div
@@ -88,7 +95,10 @@ export function CognitionColumn({
                 aria-label="Loading"
               />
             ) : (
-              "Run"
+              <>
+                <span>Run</span>
+                <span className="text-[10px] opacity-70">⌘↵</span>
+              </>
             )}
           </button>
         </div>
@@ -103,9 +113,15 @@ export function CognitionColumn({
               className="h-4 w-4"
               checked={useWeb}
               onChange={(e) => onChangeUseWeb(e.target.checked)}
+              disabled={model === "gpt-4.1-nano"}
             />
             Use web search (Responses API)
           </label>
+          {model === "gpt-4.1-nano" && (
+            <span className="text-[10px] text-gray-400 dark:text-gray-500 italic">
+              (not available for gpt-4.1-nano)
+            </span>
+          )}
         </div>
       </div>
     </section>

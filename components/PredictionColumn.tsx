@@ -109,6 +109,24 @@ export function PredictionColumn({
   const pctOut = cap ? Math.min(100, Math.round(((outTok ?? 0) / cap) * 100)) : 0;
   const showCapBar = cap != null && (inTok != null || outTok != null);
 
+  // Stipple pattern for unused token area (theme-aware)
+  const stipplePattern = useMemo(() => {
+    // Light mode: gray-200 and gray-300
+    const light = 'repeating-linear-gradient(45deg, rgb(229 231 235) 0px, rgb(229 231 235) 3px, rgb(209 213 219) 3px, rgb(209 213 219) 6px)';
+    // Dark mode: gray-700 and gray-600
+    const dark = 'repeating-linear-gradient(45deg, rgb(55 65 81) 0px, rgb(55 65 81) 3px, rgb(75 85 99) 3px, rgb(75 85 99) 6px)';
+    
+    // Detect dark mode via media query
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return dark;
+    }
+    // Also check for dark class on html element (if using class-based dark mode)
+    if (typeof document !== 'undefined' && document.documentElement.classList.contains('dark')) {
+      return dark;
+    }
+    return light;
+  }, []);
+
   return (
     <section className="flex flex-col h-full">
       <h2 className="text-lg font-semibold mb-2">
@@ -116,7 +134,12 @@ export function PredictionColumn({
       </h2>
       {showCapBar && (
         <div className="mb-2">
-          <div className="relative h-2.5 w-full rounded bg-gray-200 dark:bg-gray-700 overflow-hidden">
+          <div 
+            className="relative h-2.5 w-full rounded overflow-hidden"
+            style={{
+              backgroundImage: stipplePattern,
+            }}
+          >
             {/* Input segment */}
             <div
               className="absolute left-0 top-0 h-full bg-gray-500/70 dark:bg-gray-400/60"
